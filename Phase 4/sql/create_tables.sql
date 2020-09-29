@@ -8,17 +8,17 @@ CREATE TABLE Organisations (
    Earnings             BIGINT NOT NULL DEFAULT 0
 );
 
-CREATE TABLE VideoGame (
+CREATE TABLE VideoGames (
    GameID               SERIAL, -- PK
-   Name                 TEXT NOT NULL,
+   Name                 VARCHAR(128) NOT NULL,
    ReleaseDate          DATE NOT NULL,
    LatestPatch          TEXT NOT NULL,
    RegisteredPlayers    BIGINT NOT NULL,
    OrganisationID       INT NOT NULL -- FK to Organisations.OrganisationID
 );
-ALTER TABLE VideoGame ADD CONSTRAINT user_musicbrainz_id_key UNIQUE (musicbrainz_id);
+ALTER TABLE VideoGames ADD CONSTRAINT UniqueGameName UNIQUE (Name);
 
-CREATE TABLE Coach (
+CREATE TABLE Coaches (
    Name                 TEXT NOT NULL,
    StartDate            DATE NOT NULL,
    EndDate              DATE,
@@ -33,12 +33,56 @@ CREATE TABLE Played (
    GameID               INT NOT NULL  -- FK VideoGame.GameID
 );
 
-CREATE TABLE Player (
-   PlayerID             SERIAL, -- PK
-   Username             TEXT NOT NULL,
-   EventID              INT NOT NULL, -- FK EsportEvent.EventID
-   GameID               INT NOT NULL  -- FK VideoGame.GameID
+CREATE TABLE Players (
+    Username            VARCHAR(40) NOT NULL,
+    PlayerID            SERIAL, -- PK
+    FirstName           TEXT NOT NULL,
+    LastName            TEXT NOT NULL,
+    Winnings            BIGINT NOT NULL DEFAULT 0,
+    Nationality         TEXT NOT NULL,
+    DateOfBirth         DATE NOT NULL
+);
+ALTER TABLE Players ADD CONSTRAINT UniqueUsername UNIQUE (Username);
+
+CREATE TABLE Organised (
+   OrganisationID       INT NOT NULL, -- FK Organisations.OrganisationID
+   EventID              INT NOT NULL -- FK EsportEvent.EventID
 );
 
+CREATE TABLE Teams (
+   OrganisationID       INT NOT NULL, -- FK to Organisations.OrganisationID
+   Manager              TEXT NOT NULL
+);
+
+CREATE TABLE Ranklist (
+   EventID              INT NOT NULL, -- FK to EsportEvent.EventID
+   FirstPlace           INT NOT NULL,
+   SecondPlace          INT NOT NULL,
+   ThirdPlace           INT NOT NULL
+);
+
+CREATE TABLE ESportEvents (
+    EventID             SERIAL, -- PK
+    Name                TEXT,
+    StartDate           DATE NOT NULL,
+    EndDate             DATE NOT NULL,
+    PrizePool           BIGINT NOT NULL
+);
+
+CREATE TABLE Developers (
+    OrganizationID      INT NOT NULL, -- FK Organisations.OrganisationID
+    CEO                 TEXT NOT NULL
+);
+
+CREATE TABLE Owns (
+  ParentID          INT NOT NULL, -- FK Organisations.OrganisationID
+  SubsidiaryID      INT NOT NULL, -- FK Organisations.OrganisationID
+  AcquiredOn        DATE NOT NULL
+);
+
+CREATE TABLE Platforms (
+  GameID        INT NOT NULL, -- FK VideoGames.GameID
+  Platform      TEXT NOT NULL
+);
 
 COMMIT;
