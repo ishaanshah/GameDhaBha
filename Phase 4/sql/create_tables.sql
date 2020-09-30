@@ -77,8 +77,8 @@ CREATE TABLE Developers (
 ALTER TABLE Developers ADD CONSTRAINT UniqueDevOrgID UNIQUE (OrganisationID);
 
 CREATE TABLE Owns (
-  ParentID              INT NOT NULL, -- FK Organisations.OrganisationID
-  SubsidiaryID          INT NOT NULL, -- FK Organisations.OrganisationID
+  ParentID              BIGINT UNSIGNED NOT NULL, -- FK Organisations.OrganisationID
+  SubsidiaryID          BIGINT UNSIGNED NOT NULL, -- FK Organisations.OrganisationID
   AcquiredOn            DATE NOT NULL
 );
 
