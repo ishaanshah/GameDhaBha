@@ -14,7 +14,7 @@ CREATE TABLE VideoGames (
    ReleaseDate          DATE NOT NULL,
    LatestPatch          TEXT NOT NULL,
    RegisteredPlayers    BIGINT NOT NULL,
-   OrganisationID       INT NOT NULL -- FK to Organisations.OrganisationID
+   OrganisationID       BIGINT UNSIGNED NOT NULL -- FK to Organisations.OrganisationID
 );
 ALTER TABLE VideoGames ADD CONSTRAINT UniqueGameName UNIQUE (Name);
 
@@ -22,15 +22,15 @@ CREATE TABLE Coaches (
    Name                 TEXT NOT NULL,
    StartDate            DATE NOT NULL,
    EndDate              DATE,
-   TeamID               INT NOT NULL, -- FK to Team.OrganisationID
-   GameID               INT NOT NULL -- FK to VideoGame.GameID
+   TeamID               BIGINT UNSIGNED NOT NULL, -- FK to Team.OrganisationID
+   GameID               BIGINT UNSIGNED NOT NULL -- FK to VideoGame.GameID
 );
 
 CREATE TABLE Played (
-   OrganisationID       INT NOT NULL, -- FK to Organisations.OrganisationID
-   EventID              INT NOT NULL, -- FK EsportEvent.EventID
-   PlayerID             INT NOT NULL, -- FK Players.PlayerID
-   GameID               INT NOT NULL  -- FK VideoGame.GameID
+   OrganisationID       BIGINT UNSIGNED NOT NULL, -- FK to Organisations.OrganisationID
+   EventID              BIGINT UNSIGNED NOT NULL, -- FK EsportEvent.EventID
+   PlayerID             BIGINT UNSIGNED NOT NULL, -- FK Players.PlayerID
+   GameID               BIGINT UNSIGNED NOT NULL  -- FK VideoGame.GameID
 );
 
 CREATE TABLE Players (
@@ -45,17 +45,17 @@ CREATE TABLE Players (
 ALTER TABLE Players ADD CONSTRAINT UniqueUsername UNIQUE (Username);
 
 CREATE TABLE Organised (
-   OrganisationID       INT NOT NULL, -- FK Organisations.OrganisationID
-   EventID              INT NOT NULL -- FK EsportEvent.EventID
+   OrganisationID       BIGINT UNSIGNED NOT NULL, -- FK Organisations.OrganisationID
+   EventID              BIGINT UNSIGNED NOT NULL -- FK EsportEvent.EventID
 );
 
 CREATE TABLE Teams (
-   OrganisationID       INT NOT NULL, -- FK to Organisations.OrganisationID
+   OrganisationID       BIGINT UNSIGNED NOT NULL, -- FK to Organisations.OrganisationID
    Manager              TEXT NOT NULL
 );
 
 CREATE TABLE Ranklist (
-   EventID              INT NOT NULL, -- FK to EsportEvent.EventID
+   EventID              BIGINT UNSIGNED NOT NULL, -- FK to EsportEvent.EventID
    FirstPlace           INT NOT NULL,
    SecondPlace          INT NOT NULL,
    ThirdPlace           INT NOT NULL
@@ -70,19 +70,19 @@ CREATE TABLE ESportEvents (
 );
 
 CREATE TABLE Developers (
-    OrganizationID      INT NOT NULL, -- FK Organisations.OrganisationID
+    OrganizationID      BIGINT UNSIGNED NOT NULL, -- FK Organisations.OrganisationID
     CEO                 TEXT NOT NULL
 );
 
 CREATE TABLE Owns (
-  ParentID          INT NOT NULL, -- FK Organisations.OrganisationID
-  SubsidiaryID      INT NOT NULL, -- FK Organisations.OrganisationID
-  AcquiredOn        DATE NOT NULL
+  ParentID              INT NOT NULL, -- FK Organisations.OrganisationID
+  SubsidiaryID          INT NOT NULL, -- FK Organisations.OrganisationID
+  AcquiredOn            DATE NOT NULL
 );
 
 CREATE TABLE Platforms (
-  GameID        INT NOT NULL, -- FK VideoGames.GameID
-  Platform      TEXT NOT NULL
+  GameID                BIGINT UNSIGNED NOT NULL, -- FK VideoGames.GameID
+  Platform              TEXT NOT NULL
 );
 
 COMMIT;
