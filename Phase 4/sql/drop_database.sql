@@ -1,0 +1,5 @@
+BEGIN;
+
+DROP DATABASE GameDhaBha;
+
+COMMIT;
