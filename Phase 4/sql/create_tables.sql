@@ -53,6 +53,7 @@ CREATE TABLE Teams (
    OrganisationID       BIGINT UNSIGNED NOT NULL, -- FK to Organisations.OrganisationID
    Manager              TEXT NOT NULL
 );
+ALTER TABLE Teams ADD CONSTRAINT UniqueTeamOrgID UNIQUE (OrganisationID);
 
 CREATE TABLE Ranklist (
    EventID              BIGINT UNSIGNED NOT NULL, -- FK to EsportEvent.EventID
@@ -70,9 +71,10 @@ CREATE TABLE ESportEvents (
 );
 
 CREATE TABLE Developers (
-    OrganizationID      BIGINT UNSIGNED NOT NULL, -- FK Organisations.OrganisationID
+    OrganisationID      BIGINT UNSIGNED NOT NULL, -- FK Organisations.OrganisationID
     CEO                 TEXT NOT NULL
 );
+ALTER TABLE Developers ADD CONSTRAINT UniqueDevOrgID UNIQUE (OrganisationID);
 
 CREATE TABLE Owns (
   ParentID              INT NOT NULL, -- FK Organisations.OrganisationID
