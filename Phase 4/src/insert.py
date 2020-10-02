@@ -95,7 +95,24 @@ def InsertPlayer(cur, con):
 
 
 def InsertCoach(cur, con):
-    raise NotImplementedError
+    """Insert a new coach in the Coaches Table"""
+    row = {}
+    row["Name"] = input("Enter the name of the coach. ") or None
+    row["StartDate"] = input("Enter the start date of the coach. ") or None
+    row["EndDate"] = input("Enter the end date of the coach. (OPTIONAL) ") or None
+    row["TeamID"] = input("Enter the team id of the team that the coach is for. ") or None
+    row["GameID"] = input("Enter the game id of the game that the coach is for. ") or None
+
+    # Query to be executed
+    query = """ INSERT INTO Coaches (Name, StartDate, EndDate, TeamID, GameID)
+                VALUES (%(Name)s, %(StartDate)s, %(EndDate)s, %(TeamID)s, %(GameID)s)
+            """
+
+    print("\nExecuting")
+    print(query)
+
+    # Executing query
+    cur.execute(query, row)
 
 
 def InsertHandler(cur, con):
