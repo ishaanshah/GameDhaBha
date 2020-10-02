@@ -91,7 +91,26 @@ def CreateRanklist(cur, con):
 
 
 def InsertPlayer(cur, con):
-    raise NotImplementedError
+    """ Inserts a new player in the database."""
+
+    row = {}
+    row["Username"] = input("Enter the username of the player. ") or None
+    row["FirstName"] = input("Enter the first name of the player. ") or None
+    row["LastName"] = input("Enter the last name of the player. ") or None
+    row["Winnings"] = int(input("Enter the total winnings of the player till now. "))
+    row["Nationality"] = input("Enter the Nationality of the player. ") or None
+    row["DateOfBirth"] = input("Enter the date of birth of the player in YYYY-MM-DD format. ")
+
+    # Query to be executed
+    query = """INSERT INTO Players (Username, FirstName, LastName, Winnings, Nationality, DateOfBirth)
+                VALUES (%(Username)s, %(FirstName)s, %(LastName)s, %(Winnings)s, %(Nationality)s, %(DateOfBirth)s)
+            """
+
+    print("\nExecuting")
+    print(query)
+
+    # Execute query
+    cur.execute(query, row)
 
 
 def InsertCoach(cur, con):
