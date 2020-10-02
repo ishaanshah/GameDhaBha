@@ -5,7 +5,7 @@ CREATE TABLE Organisations (
    Name                 TEXT NOT NULL,
    Headquarters         TEXT,
    Founded              DATE NOT NULL,
-   Earnings             BIGINT DEFAULT 0
+   Earnings             BIGINT NOT NULL DEFAULT 0
 );
 
 CREATE TABLE VideoGames (
