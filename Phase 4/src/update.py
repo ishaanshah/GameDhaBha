@@ -1,8 +1,26 @@
-"""Contains all the functions related to the updation of enitities into the database"""
+""" Contains all the functions related to the updation of enitities in the Database """
 
 
 def UpdateVideoGameLatestPatch(cur, con):
-    raise NotImplementedError
+    """ Updates the latest patch for a VideoGame in the database """
+    # Get the latest patch
+    row = {}
+    row["GameID"] = input(
+        "Enter GameID of the Video Game for which latest "
+        "patch has to be updated: ") or None
+    row["LatestPatch"] = input("Enter latest patch for the game: ") or None
+
+    # Query to be executed
+    query = """UPDATE VideoGames
+                  SET LatestPatch = %(LatestPatch)s
+                WHERE GameID = %(GameID)s
+            """
+
+    print("\nExecuting")
+    print(query)
+
+    # Execute query
+    cur.execute(query, row)
 
 
 def AcquirementOfOrganization(cur, con):
@@ -62,7 +80,6 @@ def UpdateHandler(cur, con):
     # Get operation to Perform
     print("1. Update VideoGame Latest Patch.")
     print("2. Update that an Organization is Acquired.")
-    print("3. Update that an Organization Acquires another Organization.")
     print("4. Update the start date of an ESportEvent.")
     print("5. Update the end date of an ESportEvent.")
     print("6. Update the prize pool of an ESportEvent.")
@@ -76,10 +93,10 @@ def UpdateHandler(cur, con):
     try:
         handlers[ch - 1](cur, con)
         con.commit()
-        print("Insertion Successful.")
+        print("Update Successful.")
     except (IndexError, TypeError):
         print(f"Error: Invalid Option {ch}")
     except Exception as error:
         con.rollback()
-        print("Failed to insert into the Database.")
+        print("Failed to update the Database.")
         print(f"Error: {error}")
