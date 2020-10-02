@@ -1,7 +1,6 @@
 """Contains all the functions related to the updation of enitities into the database"""
 
 def UpdateVideoGameLatestPatch(cur, con):
-    print("reached here")
     raise NotImplementedError
 
 def AcquirementOfOrganization(cur, con):
