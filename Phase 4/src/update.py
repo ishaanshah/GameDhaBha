@@ -1,28 +1,39 @@
 """Contains all the functions related to the updation of enitities into the database"""
 
+
 def UpdateVideoGameLatestPatch(cur, con):
     raise NotImplementedError
+
 
 def AcquirementOfOrganization(cur, con):
     raise NotImplementedError
 
+
 def AcquireOrganization(cur, con):
     raise NotImplementedError
+
 
 def UpdateESportEventStartDate(cur, con):
     raise NotImplementedError
 
+
 def UpdateESportEventEndDate(cur, con):
     raise NotImplementedError
 
-def UpdateESportEventPrizePool(cur, con):
-    # raise NotImplementedError
-    row={}
-    row["EventToUpdate"] = input("Enter the Event ID of the eSport Event whose prize pool has to be updated:")
-    row["NewPrizePool"] = int(input("Enter the updated prize pool of the eSport Event in USD:"))
 
-    query = """
-            UPDATE ESportEvents set PrizePool = %(NewPrizePool)s where EventID = %(EventToUpdate)s
+def UpdateESportEventPrizePool(cur, con):
+    """ Updates the latest patch for a VideoGame in the database """
+    # Get the prize pool
+    row = {}
+    row["EventToUpdate"] = input(
+        "Enter the Event ID of the eSport Event whose "
+        "prize pool has to be updated: ") or None
+    row["NewPrizePool"] = input(
+        "Enter the updated prize pool of the eSport Event in USD: ") or None
+
+    query = """UPDATE ESportEvents
+                  SET PrizePool = %(NewPrizePool)s
+                WHERE EventID = %(EventToUpdate)s
             """
 
     print("\nExecuting")
@@ -31,8 +42,10 @@ def UpdateESportEventPrizePool(cur, con):
     # Execute Query
     cur.execute(query, row)
 
+
 def UpdatePlayerWinnings(cur, con):
     raise NotImplementedError
+
 
 def UpdateHandler(cur, con):
     # Define Handlers
@@ -58,10 +71,10 @@ def UpdateHandler(cur, con):
 
     ch = int(input("Enter choice: "))
     if ch == 8:
-        return;
+        return
 
     try:
-        handlers[ch - 1] (cur, con)
+        handlers[ch - 1](cur, con)
         con.commit()
         print("Insertion Successful.")
     except (IndexError, TypeError):
