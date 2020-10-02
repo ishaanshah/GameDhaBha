@@ -62,6 +62,7 @@ def InsertVideoGame(cur, con):
 
 def InsertDeveloper(cur, con):
     """ Inserts a new Developer in the database """
+    # Get information about the Developer
     row = {}
     row["OrganisationID"] = InsertOrganisation(cur, con, "Developer")
     row["CEO"] = input("Enter the Developer's CEO name: ")
@@ -79,8 +80,8 @@ def InsertDeveloper(cur, con):
 
 
 def InsertTeam(cur, con):
-    # Get information about the Team
     """ Inserts a new Team in the database """
+    # Get information about the Team
     row = {}
     row["OrganisationID"] = InsertOrganisation(cur, con, "Team")
     row["Manager"] = input("Enter the team's manager name: ")
@@ -98,19 +99,21 @@ def InsertTeam(cur, con):
 
 
 def InsertESportEvent(cur, con):
-    """Inserts a new ESportEvent"""
-
+    """Inserts a new ESportEvent in the database """
     # Get information about the Event
     row = {}
-    row["Name"] = input("Enter the Name of the ESportEvent. ")
-    row["StartDate"] = input("Enter the start date of the ESportEvent. ")
-    row["EndDate"] = input("Enter the end date of the ESportEvent. ")
-    row["PrizePool"] = input("Enter the total prize money involved in the ESportEvent. (USD) ")
+    row["Name"] = input("Enter the Name of the ESportEvent: ") or None
+    row["StartDate"] = input(
+        "Enter the start date of the ESportEvent in YYYY-MM-DD format: ") or None
+    row["EndDate"] = input(
+        "Enter the end date of the ESportEvent in YYYY-MM-DD format: ") or None
+    row["PrizePool"] = input(
+        "Enter the total prize pool for the ESportEvent in USD: ") or None
 
     # Query to be executed
     query = """
             INSERT INTO ESportEvents (Name, StartDate, EndDate, PrizePool)
-            VALUES (%(Name)s, %(StartDate)s, %(EndDate)s, %(PrizePool)s)
+                 VALUES (%(Name)s, %(StartDate)s, %(EndDate)s, %(PrizePool)s)
             """
 
     print("\nExecuting")
