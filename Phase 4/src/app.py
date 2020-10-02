@@ -3,6 +3,8 @@ import pymysql
 import pymysql.cursors
 import sys
 
+from insert import InsertHandler
+
 
 def option2():
     """
@@ -110,7 +112,7 @@ def dispatch(ch):
     """
 
     if(ch == 1):
-        InsertVideoGame()
+        InsertHandler(cur, con)
     elif(ch == 2):
         option2()
     elif(ch == 3):
@@ -151,12 +153,12 @@ while(1):
             while(1):
                 tmp = sp.call('clear', shell=True)
                 # Here taking example of Employee Mini-world
-                print("1. Option 1")  # Hire an Employee
+                print("1. Insert")  # Hire an Employee
                 print("2. Option 2")  # Fire an Employee
                 print("3. Option 3")  # Promote Employee
                 print("4. Option 4")  # Employee Statistics
                 print("5. Quit")
-                ch = int(input("Enter choice> "))
+                ch = int(input("Enter choice: "))
                 tmp = sp.call('clear', shell=True)
                 if ch == 5:
                     exit(0)
