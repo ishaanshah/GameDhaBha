@@ -12,7 +12,7 @@ def InsertOrganisation(cur, con, entity_name: str = "Organisation") -> int:
     row["Founded"] = input(
         f"Enter the date when the {entity_name} was founded in YYYY-MM-DD format: ")
     row["Earnings"] = input(
-        f"Enter earnings of {entity_name} in USD (Optional): ") or None
+        f"Enter earnings of {entity_name} in USD (Optional): ") or 0
 
     # Query to be executed
     query = """INSERT INTO Organisations (Name, Headquarters,
@@ -92,18 +92,22 @@ def CreateRanklist(cur, con):
 
 def InsertPlayer(cur, con):
     """ Inserts a new player in the database."""
-
+    # Get information about the player
     row = {}
-    row["Username"] = input("Enter the username of the player. ") or None
-    row["FirstName"] = input("Enter the first name of the player. ") or None
-    row["LastName"] = input("Enter the last name of the player. ") or None
-    row["Winnings"] = int(input("Enter the total winnings of the player till now. "))
-    row["Nationality"] = input("Enter the Nationality of the player. ") or None
-    row["DateOfBirth"] = input("Enter the date of birth of the player in YYYY-MM-DD format. ")
+    row["Username"] = input("Enter the username of the player: ") or None
+    row["FirstName"] = input("Enter the first name of the player: ") or None
+    row["LastName"] = input("Enter the last name of the player: ") or None
+    row["Winnings"] = input(
+        "Enter the total winnings of the player till now: ") or 0
+    row["Nationality"] = input("Enter the Nationality of the player: ") or None
+    row["DateOfBirth"] = input(
+        "Enter the date of birth of the player in YYYY-MM-DD format: ") or None
 
     # Query to be executed
-    query = """INSERT INTO Players (Username, FirstName, LastName, Winnings, Nationality, DateOfBirth)
-                VALUES (%(Username)s, %(FirstName)s, %(LastName)s, %(Winnings)s, %(Nationality)s, %(DateOfBirth)s)
+    query = """INSERT INTO Players (Username, FirstName, LastName,
+                                    Winnings, Nationality, DateOfBirth)
+                    VALUES (%(Username)s, %(FirstName)s, %(LastName)s,
+                            %(Winnings)s, %(Nationality)s, %(DateOfBirth)s)
             """
 
     print("\nExecuting")
