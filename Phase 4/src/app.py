@@ -4,6 +4,7 @@ import pymysql.cursors
 import sys
 
 from insert import InsertHandler
+from update import UpdateHandler
 
 
 def option2():
@@ -35,7 +36,7 @@ def dispatch(ch):
     if(ch == 1):
         InsertHandler(cur, con)
     elif(ch == 2):
-        option2()
+        UpdateHandler(cur, con)
     elif(ch == 3):
         option3()
     elif(ch == 4):
@@ -75,7 +76,7 @@ while(1):
                 tmp = sp.call('clear', shell=True)
                 # Here taking example of Employee Mini-world
                 print("1. Insert")  # Hire an Employee
-                print("2. Option 2")  # Fire an Employee
+                print("2. Update")  # Fire an Employee
                 print("3. Option 3")  # Promote Employee
                 print("4. Option 4")  # Employee Statistics
                 print("5. Quit")
