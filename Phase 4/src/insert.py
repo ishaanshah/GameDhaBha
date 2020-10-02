@@ -9,24 +9,24 @@ def InsertOrganisation(cur, con):
         row = {}
         row["Name"] = input("Enter the name of the Organisation: ")
         row["Headquarters"] = input(
-            "Enter the headquarters of organisation (Optional): ")
+            "Enter the headquarters of organisation (Optional): ") or None
         row["Founded"] = input(
             "Enter the date when the organisation was founded in YYYY-MM-DD format: ")
         row["Earnings"] = input(
-            "Enter earnings of organisation in USD (Optional): ")
+            "Enter earnings of organisation in USD (Optional): ") or None
 
         # Query to be executed
-        query = f"""INSERT INTO Organisations (Name, Headquarters,
+        query = """INSERT INTO Organisations (Name, Headquarters,
                                                Founded, Earnings)
-                         VALUES ("{row["Name"]}", "{row["Headquarters"] or None}",
-                                 "{row["Founded"]}", "{row["Earnings"] or None}")
-                 """
+                         VALUES (%(Name)s, %(Headquarters)s,
+                                 %(Founded)s, %(Earnings)s)
+                """
 
         print("\nExecuting")
         print(query)
 
         # Execute query
-        cur.execute(query)
+        cur.execute(query, row)
         con.commit()
         print("Insertion successful")
     except Exception as error:
@@ -51,17 +51,17 @@ def InsertVideoGame(cur, con):
             input("Enter the OrganisationID of the Organisation that created the game: "))
 
         # Query to be executed
-        query = f"""INSERT INTO VideoGames (Name, ReleaseDate, LatestPatch,
+        query = """INSERT INTO VideoGames (Name, ReleaseDate, LatestPatch,
                                             RegisteredPlayers, OrganisationID)
-                         VALUES ("{row["Name"]}", "{row["ReleaseDate"]}", "{row["LatestPatch"]}",
-                                 "{row["RegisteredPlayers"]}", "{row["OrganisationID"]}")
-                 """
+                         VALUES (%(Name)s, %(ReleaseDate)s, %(LatestPatch)s,
+                                 %(RegisteredPlayers)s, %(OrganisationID)s)
+                """
 
         print("\nExecuting")
         print(query)
 
         # Execute query
-        cur.execute(query)
+        cur.execute(query, row)
         con.commit()
         print("Insertion successful")
     except Exception as error:
