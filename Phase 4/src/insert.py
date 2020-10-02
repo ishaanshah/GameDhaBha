@@ -124,7 +124,26 @@ def InsertESportEvent(cur, con):
 
 
 def CreateRanklist(cur, con):
-    raise NotImplementedError
+    """ Creates a ranklist for an ESportEvent. """
+    
+    # Get the first, second and the third place
+    row = {}
+    row["EventID"] = input("Enter the EventID for the Event for which the Ranklist has to be created. ")
+    row["FirstPlace"] = input("Enter the PlayerID of the Player who was First in the Event. ")
+    row["SecondPlace"] = input("Enter the PlayerID of the Player who was Second in the Event. ")
+    row["ThirdPlace"] = input("Enter the PlayerID of the Player who was Third in the Event. ")
+
+    # Query to be executed
+    query = """
+            INSERT INTO Ranklist (EventID, FirstPlace, SecondPlace, ThirdPlace)
+            VALUES (%(EventID)s, %(FirstPlace)s, %(SecondPlace)s, %(ThirdPlace)s)
+            """
+
+    print("\nExecuting")
+    print(query)
+
+    # Execute Query
+    cur.execute(query, row)
 
 
 def InsertPlayer(cur, con):
