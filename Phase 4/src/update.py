@@ -16,7 +16,20 @@ def UpdateESportEventEndDate(cur, con):
     raise NotImplementedError
 
 def UpdateESportEventPrizePool(cur, con):
-    raise NotImplementedError
+    # raise NotImplementedError
+    row={}
+    row["EventToUpdate"] = input("Enter the Event ID of the eSport Event whose prize pool has to be updated:")
+    row["NewPrizePool"] = int(input("Enter the updated prize pool of the eSport Event in USD:"))
+
+    query = """
+            UPDATE ESportEvents set PrizePool = %(NewPrizePool)s where EventID = %(EventToUpdate)s
+            """
+
+    print("\nExecuting")
+    print(query)
+
+    # Execute Query
+    cur.execute(query, row)
 
 def UpdatePlayerWinnings(cur, con):
     raise NotImplementedError
@@ -29,6 +42,7 @@ def UpdateHandler(cur, con):
         AcquireOrganization,
         UpdateESportEventStartDate,
         UpdateESportEventEndDate,
+        UpdateESportEventPrizePool,
         UpdatePlayerWinnings
     ]
 
@@ -38,11 +52,12 @@ def UpdateHandler(cur, con):
     print("3. Update that an Organization Acquires another Organization.")
     print("4. Update the start date of an ESportEvent.")
     print("5. Update the end date of an ESportEvent.")
-    print("6. Update the winnings of a player.")
-    print("7. Go Back")
+    print("6. Update the prize pool of an ESportEvent.")
+    print("7. Update the winnings of a player.")
+    print("8. Go Back")
 
     ch = int(input("Enter choice: "))
-    if ch == 9:
+    if ch == 8:
         return;
 
     try:
