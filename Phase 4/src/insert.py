@@ -65,7 +65,21 @@ def InsertDeveloper(cur, con):
 
 
 def InsertTeam(cur, con):
-    raise NotImplementedError
+    """ Inserts a new Team in the database """
+    row = {}
+    row["OrganisationID"] = InsertOrganisation(cur, con, "Team")
+    row["Manager"] = input("Enter the team's manager name: ")
+
+    # Query to be executed
+    query = """INSERT INTO Teams (OrganisationID, Manager)
+                     VALUES (%(OrganisationID)s, %(Manager)s)
+            """
+
+    print("\nExecuting")
+    print(query)
+
+    # Execute query
+    cur.execute(query, row)
 
 
 def InsertESportEvent(cur, con):
