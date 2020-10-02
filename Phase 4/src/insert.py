@@ -65,6 +65,7 @@ def InsertDeveloper(cur, con):
 
 
 def InsertTeam(cur, con):
+    # Get information about the Team
     """ Inserts a new Team in the database """
     row = {}
     row["OrganisationID"] = InsertOrganisation(cur, con, "Team")
@@ -95,17 +96,25 @@ def InsertPlayer(cur, con):
 
 
 def InsertCoach(cur, con):
-    """Insert a new coach in the Coaches Table"""
+    """ Inserts a new coach in the database """
+    # Get information about the Coach
+    print("Enter new Coaches' information:")
     row = {}
-    row["Name"] = input("Enter the name of the coach. ") or None
-    row["StartDate"] = input("Enter the start date of the coach. ") or None
-    row["EndDate"] = input("Enter the end date of the coach. (OPTIONAL) ") or None
-    row["TeamID"] = input("Enter the team id of the team that the coach is for. ") or None
-    row["GameID"] = input("Enter the game id of the game that the coach is for. ") or None
+    row["Name"] = input("Enter the name of the coach: ") or None
+    row["StartDate"] = input(
+        "Enter the start date of the coach in YYYY-MM-DD format: ") or None
+    row["EndDate"] = input(
+        "Enter the end date of the coach YYYY-MM-DD format (Optional): ") or None
+    row["TeamID"] = input(
+        "Enter the TeamID of the team that the coach is for: ") or None
+    row["GameID"] = input(
+        "Enter the GameID of the game that the coach is for: ") or None
 
     # Query to be executed
-    query = """ INSERT INTO Coaches (Name, StartDate, EndDate, TeamID, GameID)
-                VALUES (%(Name)s, %(StartDate)s, %(EndDate)s, %(TeamID)s, %(GameID)s)
+    query = """INSERT INTO Coaches (Name, StartDate, EndDate,
+                                    TeamID, GameID)
+                    VALUES (%(Name)s, %(StartDate)s, %(EndDate)s,
+                            %(TeamID)s, %(GameID)s)
             """
 
     print("\nExecuting")
