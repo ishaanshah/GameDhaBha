@@ -64,7 +64,7 @@ CREATE TABLE Ranklist (
 
 CREATE TABLE ESportEvents (
     EventID             SERIAL, -- PK
-    Name                TEXT,
+    Name                TEXT NOT NULL,
     StartDate           DATE NOT NULL,
     EndDate             DATE NOT NULL,
     PrizePool           BIGINT NOT NULL

@@ -62,6 +62,7 @@ def InsertVideoGame(cur, con):
 
 def InsertDeveloper(cur, con):
     """ Inserts a new Developer in the database """
+    # Get information about the Developer
     row = {}
     row["OrganisationID"] = InsertOrganisation(cur, con, "Developer")
     row["CEO"] = input("Enter the Developer's CEO name: ")
@@ -79,8 +80,8 @@ def InsertDeveloper(cur, con):
 
 
 def InsertTeam(cur, con):
-    # Get information about the Team
     """ Inserts a new Team in the database """
+    # Get information about the Team
     row = {}
     row["OrganisationID"] = InsertOrganisation(cur, con, "Team")
     row["Manager"] = input("Enter the team's manager name: ")
@@ -98,7 +99,28 @@ def InsertTeam(cur, con):
 
 
 def InsertESportEvent(cur, con):
-    raise NotImplementedError
+    """Inserts a new ESportEvent in the database """
+    # Get information about the Event
+    row = {}
+    row["Name"] = input("Enter the Name of the ESportEvent: ") or None
+    row["StartDate"] = input(
+        "Enter the start date of the ESportEvent in YYYY-MM-DD format: ") or None
+    row["EndDate"] = input(
+        "Enter the end date of the ESportEvent in YYYY-MM-DD format: ") or None
+    row["PrizePool"] = input(
+        "Enter the total prize pool for the ESportEvent in USD: ") or None
+
+    # Query to be executed
+    query = """
+            INSERT INTO ESportEvents (Name, StartDate, EndDate, PrizePool)
+                 VALUES (%(Name)s, %(StartDate)s, %(EndDate)s, %(PrizePool)s)
+            """
+
+    print("\nExecuting")
+    print(query)
+
+    # Execute Query
+    cur.execute(query, row)
 
 
 def CreateRanklist(cur, con):
@@ -179,10 +201,10 @@ def InsertHandler(cur, con):
     print("2. Insert Video Game")
     print("3. Insert Developer")
     print("4. Insert Team")
-    print("5. Insert eSport Event")  # Sriram
-    print("6. Create Ranklist")  # Sriram
-    print("7. Insert Player")  # Rahul
-    print("8. Insert Coach")  # Rahul
+    print("5. Insert ESport Event")
+    print("6. Create Ranklist")
+    print("7. Insert Player")
+    print("8. Insert Coach")
     print("9. Go Back")
     ch = int(input("Enter choice: "))
     if ch == 9:
