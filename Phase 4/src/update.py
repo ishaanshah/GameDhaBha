@@ -6,11 +6,25 @@ def UpdateVideoGameLatestPatch(cur, con):
 
 
 def AcquirementOfOrganization(cur, con):
-    raise NotImplementedError
+    """ Updates the 'Owns' relationship to reflect acquirement of an Organisation """
+    # Get details about the acquirement
+    row = {}
+    row["ParentID"] = input(
+        "Enter OrganisationID of parent organistion: ") or None
+    row["SubsidiaryID"] = input(
+        "Enter OrganisationID of subsidiary organistion: ") or None
+    row["AcquiredOn"] = input(
+        "Enter the date when acquirement took place in YYYY-MM-DD format: ") or None
 
+    query = """INSERT INTO Owns(ParentID, SubsidiaryID, AcquiredOn)
+                    VALUES (%(ParentID)s, %(SubsidiaryID)s, %(AcquiredOn)s)
+            """
 
-def AcquireOrganization(cur, con):
-    raise NotImplementedError
+    print("\nExecuting")
+    print(query)
+
+    # Execute Query
+    cur.execute(query, row)
 
 
 def UpdateESportEventStartDate(cur, con):
@@ -52,7 +66,6 @@ def UpdateHandler(cur, con):
     handlers = [
         UpdateVideoGameLatestPatch,
         AcquirementOfOrganization,
-        AcquireOrganization,
         UpdateESportEventStartDate,
         UpdateESportEventEndDate,
         UpdateESportEventPrizePool,
@@ -62,15 +75,14 @@ def UpdateHandler(cur, con):
     # Get operation to Perform
     print("1. Update VideoGame Latest Patch.")
     print("2. Update that an Organization is Acquired.")
-    print("3. Update that an Organization Acquires another Organization.")
-    print("4. Update the start date of an ESportEvent.")
-    print("5. Update the end date of an ESportEvent.")
-    print("6. Update the prize pool of an ESportEvent.")
-    print("7. Update the winnings of a player.")
-    print("8. Go Back")
+    print("3. Update the start date of an ESportEvent.")
+    print("4. Update the end date of an ESportEvent.")
+    print("5. Update the prize pool of an ESportEvent.")
+    print("6. Update the winnings of a player.")
+    print("7. Go Back")
 
     ch = int(input("Enter choice: "))
-    if ch == 8:
+    if ch == 7:
         return
 
     try:
