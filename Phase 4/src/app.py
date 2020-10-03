@@ -5,6 +5,7 @@ import sys
 
 from insert import InsertHandler
 from update import UpdateHandler
+from search import SearchHandler
 
 
 def option2():
@@ -41,6 +42,8 @@ def dispatch(ch):
         option3()
     elif(ch == 4):
         option4()
+    elif(ch == 5):
+        SearchHandler(cur, con)
     else:
         print("Error: Invalid Option")
 
@@ -79,10 +82,11 @@ while(1):
                 print("2. Update")  # Fire an Employee
                 print("3. Option 3")  # Promote Employee
                 print("4. Option 4")  # Employee Statistics
-                print("5. Quit")
+                print("5. Search")
+                print("6. Quit")
                 ch = int(input("Enter choice: "))
                 tmp = sp.call('clear', shell=True)
-                if ch == 5:
+                if ch == 6:
                     exit(0)
                 else:
                     dispatch(ch)
