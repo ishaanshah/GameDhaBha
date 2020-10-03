@@ -3,33 +3,34 @@ import pymysql
 import pymysql.cursors
 import sys
 
+from delete import DeleteHandler
 from insert import InsertHandler
 from update import UpdateHandler
 from search import SearchHandler
 from project import ProjectHandler
 from report import ReportHandler
 
+
 def dispatch(ch):
     """
     Function that maps helper functions to option entered
     """
-
-if ch == 1:
-    InsertHandler(cur, con)
-elif ch == 2:
-    UpdateHandler(cur, con)
-elif ch == 3:
-    raise NotImplementedError
-elif ch == 4:
-    ProjectHandler(cur, con)
-elif ch == 5:
-    raise NotImplementedError
-elif ch == 6:
-    SearchHandler(cur, con)
-elif ch == 7:
-    ReportHandler(cur, con)
-else:
-    print("Error: Invalid Option"
+    if ch == 1:
+        InsertHandler(cur, con)
+    elif ch == 2:
+        UpdateHandler(cur, con)
+    elif ch == 3:
+        raise NotImplementedError
+    elif ch == 4:
+        ProjectHandler(cur, con)
+    elif ch == 5:
+        raise NotImplementedError
+    elif ch == 6:
+        SearchHandler(cur, con)
+    elif ch == 7:
+        ReportHandler(cur, con)
+    else:
+        print("Error: Invalid Option")
 
 
 # Global
