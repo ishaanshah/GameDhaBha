@@ -46,7 +46,24 @@ def AcquirementOfOrganization(cur, con):
 
 
 def UpdateESportEventStartDate(cur, con):
-    raise NotImplementedError
+    """ Updates the Start Date of en ESportEvent """
+    # Get details about the update
+    row = {}
+    row["EventID"] = input(
+        "Enter the EventID of the ESportEvent whose start date needs to be changed: ") or None
+    row["StartDate"] = input(
+        "Enter the new start date of the ESportEvent: ") or None
+
+    query = """UPDATE ESportEvents
+                  SET StartDate = %(StartDate)s
+                WHERE EventID = %(EventID)s
+            """
+
+    print("\nExecuting")
+    print(query)
+
+    # Execute Query
+    cur.execute(query, row)
 
 
 def UpdateESportEventEndDate(cur, con):
