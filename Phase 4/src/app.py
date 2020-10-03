@@ -5,6 +5,7 @@ import sys
 
 from insert import InsertHandler
 from update import UpdateHandler
+from project import ProjectHandler
 
 
 def option2():
@@ -40,7 +41,7 @@ def dispatch(ch):
     elif(ch == 3):
         option3()
     elif(ch == 4):
-        option4()
+        ProjectHandler(cur, con)
     else:
         print("Error: Invalid Option")
 
@@ -78,7 +79,7 @@ while(1):
                 print("1. Insert")  # Hire an Employee
                 print("2. Update")  # Fire an Employee
                 print("3. Option 3")  # Promote Employee
-                print("4. Option 4")  # Employee Statistics
+                print("4. Project")  # Employee Statistics
                 print("5. Quit")
                 ch = int(input("Enter choice: "))
                 tmp = sp.call('clear', shell=True)
