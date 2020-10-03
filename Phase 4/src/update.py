@@ -73,10 +73,10 @@ def UpdateESportEventEndDate(cur, con):
     row["EventID"] = input(
         "Enter the EventID of the ESportEvent whose end date needs to be changed: ") or None
     row["EndDate"] = input(
-            "Enter the new end date of the ESportEvent: ") or None
+        "Enter the new end date of the ESportEvent: ") or None
 
     query = """UPDATE ESportEvents
-                SET EndDate = %(EndDate)s
+                  SET EndDate = %(EndDate)s
                 WHERE EventID = %(EventID)s
             """
 
