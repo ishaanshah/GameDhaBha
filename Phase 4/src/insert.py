@@ -6,11 +6,11 @@ def InsertOrganisation(cur, con, entity_name: str = "Organisation") -> int:
     # Get information about the video game
     print(f"Enter new {entity_name}'s details:")
     row = {}
-    row["Name"] = input(f"Enter the name of the {entity_name}: ")
+    row["Name"] = input(f"Enter the name of the {entity_name}: ") or None
     row["Headquarters"] = input(
         f"Enter the headquarters of {entity_name} (Optional): ") or None
     row["Founded"] = input(
-        f"Enter the date when the {entity_name} was founded in YYYY-MM-DD format: ")
+        f"Enter the date when the {entity_name} was founded in YYYY-MM-DD format: ") or None
     row["Earnings"] = input(
         f"Enter earnings of {entity_name} in USD (Optional): ") or 0
 
@@ -37,14 +37,14 @@ def InsertVideoGame(cur, con):
     # Get information about the video game
     print("Enter new Video Game's details:")
     row = {}
-    row["Name"] = input("Enter the name of the Video Game: ")
+    row["Name"] = input("Enter the name of the Video Game: ") or None
     row["ReleaseDate"] = input(
-        "Enter the release date of the VideoGame in YYYY-MM-DD format: ")
-    row["LatestPatch"] = input("Enter the latest release number: ")
+        "Enter the release date of the VideoGame in YYYY-MM-DD format: ") or None
+    row["LatestPatch"] = input("Enter the latest release number: ") or None
     row["RegisteredPlayers"] = input(
-        "Enter the number of players currently playing the game: ")
-    row["OrganisationID"] = int(
-        input("Enter the OrganisationID of the Organisation that created the game: "))
+        "Enter the number of players currently playing the game: ") or None
+    row["OrganisationID"] = input(
+        "Enter the OrganisationID of the Organisation that created the game: ") or None
 
     # Query to be executed
     query = """INSERT INTO VideoGames (Name, ReleaseDate, LatestPatch,
@@ -65,11 +65,11 @@ def InsertDeveloper(cur, con):
     # Get information about the Developer
     row = {}
     row["OrganisationID"] = InsertOrganisation(cur, con, "Developer")
-    row["CEO"] = input("Enter the Developer's CEO name: ")
+    row["CEO"] = input("Enter the Developer's CEO name: ") or None
 
     # Query to be executed
     query = """INSERT INTO Developers (OrganisationID, CEO)
-                     VALUES (%(OrganisationID)s, %(CEO)s)
+                    VALUES (%(OrganisationID)s, %(CEO)s)
             """
 
     print("\nExecuting")
@@ -84,11 +84,11 @@ def InsertTeam(cur, con):
     # Get information about the Team
     row = {}
     row["OrganisationID"] = InsertOrganisation(cur, con, "Team")
-    row["Manager"] = input("Enter the team's manager name: ")
+    row["Manager"] = input("Enter the team's manager name: ") or None
 
     # Query to be executed
     query = """INSERT INTO Teams (OrganisationID, Manager)
-                     VALUES (%(OrganisationID)s, %(Manager)s)
+                    VALUES (%(OrganisationID)s, %(Manager)s)
             """
 
     print("\nExecuting")
@@ -111,9 +111,8 @@ def InsertESportEvent(cur, con):
         "Enter the total prize pool for the ESportEvent in USD: ") or None
 
     # Query to be executed
-    query = """
-            INSERT INTO ESportEvents (Name, StartDate, EndDate, PrizePool)
-                 VALUES (%(Name)s, %(StartDate)s, %(EndDate)s, %(PrizePool)s)
+    query = """INSERT INTO ESportEvents (Name, StartDate, EndDate, PrizePool)
+                    VALUES (%(Name)s, %(StartDate)s, %(EndDate)s, %(PrizePool)s)
             """
 
     print("\nExecuting")
@@ -125,18 +124,22 @@ def InsertESportEvent(cur, con):
 
 def CreateRanklist(cur, con):
     """ Creates a ranklist for an ESportEvent. """
-    
     # Get the first, second and the third place
     row = {}
-    row["EventID"] = input("Enter the EventID for the Event for which the Ranklist has to be created. ")
-    row["FirstPlace"] = input("Enter the PlayerID of the Player who was First in the Event. ")
-    row["SecondPlace"] = input("Enter the PlayerID of the Player who was Second in the Event. ")
-    row["ThirdPlace"] = input("Enter the PlayerID of the Player who was Third in the Event. ")
+    row["EventID"] = input(
+        "Enter the EventID for the Event for which the Ranklist has to be created: ") or None
+    row["FirstPlace"] = input(
+        "Enter the TeamID of the Team who placed First in the Event: ") or None
+    row["SecondPlace"] = input(
+        "Enter the TeamID of the Team who placed Second in the Event: ") or None
+    row["ThirdPlace"] = input(
+        "Enter the TeamID of the Team who placed Third in the Event: ") or None
 
     # Query to be executed
-    query = """
-            INSERT INTO Ranklist (EventID, FirstPlace, SecondPlace, ThirdPlace)
-            VALUES (%(EventID)s, %(FirstPlace)s, %(SecondPlace)s, %(ThirdPlace)s)
+    query = """INSERT INTO Ranklist (EventID, FirstPlace,
+                                     SecondPlace, ThirdPlace)
+                    VALUES (%(EventID)s, %(FirstPlace)s,
+                            %(SecondPlace)s, %(ThirdPlace)s)
             """
 
     print("\nExecuting")
