@@ -6,6 +6,7 @@ import sys
 from insert import InsertHandler
 from update import UpdateHandler
 from project import ProjectHandler
+from report import ReportHandler
 
 
 def option2():
@@ -42,6 +43,8 @@ def dispatch(ch):
         option3()
     elif(ch == 4):
         ProjectHandler(cur, con)
+    elif(ch == 7):
+        ReportHandler(cur, con)
     else:
         print("Error: Invalid Option")
 
@@ -75,15 +78,15 @@ while(1):
         with con.cursor() as cur:
             while(1):
                 tmp = sp.call('clear', shell=True)
-                # Here taking example of Employee Mini-world
-                print("1. Insert")  # Hire an Employee
-                print("2. Update")  # Fire an Employee
-                print("3. Option 3")  # Promote Employee
-                print("4. Project")  # Employee Statistics
-                print("5. Quit")
+                print("1. Insert")
+                print("2. Update")
+                print("3. Option 3")
+                print("4. Project")
+                print("7. Generate Reports")
+                print("8. Quit")
                 ch = int(input("Enter choice: "))
                 tmp = sp.call('clear', shell=True)
-                if ch == 5:
+                if ch == 8:
                     exit(0)
                 else:
                     dispatch(ch)
