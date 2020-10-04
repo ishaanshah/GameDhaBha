@@ -55,11 +55,33 @@ def GetEventRanklist(cur, con):
     row = {}
     row["EventID"] = input(
         "Enter the EventID of the event to get the ranklist: ")
-    
+
     # Query to be executed
-    query = """SELECT *
-                FROM Ranklist
-                WHERE EventID = %(EventID)s
+    query = """WITH Placements (Position, TeamID)
+                 AS (
+                   SELECT "FirstPlace" AS Position,
+                          FirstPlace AS TeamID
+                     FROM Ranklist
+                    WHERE EventID = %(EventID)s
+                   UNION ALL
+                   SELECT "SecondPlace" AS Position,
+                          SecondPlace AS TeamID
+                     FROM Ranklist
+                    WHERE EventID = %(EventID)s
+                   UNION ALL
+                   SELECT "ThirdPlace" AS Position,
+                          ThirdPlace AS TeamID
+                     FROM Ranklist
+                    WHERE EventID = %(EventID)s
+                 )
+               SELECT Placements.Position,
+                      Organisations.*,
+                      Teams.Manager
+                 FROM Teams
+                 JOIN Placements
+                   ON Placements.TeamID = Teams.OrganisationID
+                 JOIN Organisations
+                   ON Teams.OrganisationID = Organisations.OrganisationID
             """
 
     print("\nExecuting")
@@ -68,9 +90,9 @@ def GetEventRanklist(cur, con):
     # Execute query
     cur.execute(query, row)
 
-    # Print the events
-    headers = ["FirstPlace", "SecondPlace",
-               "ThirdPlace"]
+    # Print the Ranlist
+    headers = ["Position", "OrganisationID", "Manager", "Name",
+               "Headquarters", "Founded", "Earnings"]
     rows = []
     while True:
         res = cur.fetchone()
@@ -92,13 +114,15 @@ def GetCoaches(cur, con):
     row = {}
     row["TeamID"] = input(
         "Enter the TeamID of the team to find the coach for: ")
-    row["GameID"] = input(("Enter the GameID of the game to find who coached Team {} to play this game: ").format(row["TeamID"]))
+    row["GameID"] = input(
+        "Enter the GameID of the game to find who coached "
+        f"Team {row['TeamID']} to play this game: ")
 
     # Query to be executed
     query = """SELECT *
-                FROM Coaches
+                 FROM Coaches
                 WHERE TeamID = %(TeamID)s
-                AND GameID = %(GameID)s
+                  AND GameID = %(GameID)s
             """
 
     print("\nExecuting")
@@ -108,8 +132,7 @@ def GetCoaches(cur, con):
     cur.execute(query, row)
 
     # Print the coaches
-    headers = ["Name", "StartDate",
-               "EndDate"]
+    headers = ["Name", "StartDate", "EndDate"]
     rows = []
     while True:
         res = cur.fetchone()
