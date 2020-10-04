@@ -1,6 +1,6 @@
 BEGIN;
 
-ALTER TABLE VideoGames ADD CONSTRAINT GameOrgFKey FOREIGN KEY (OrganisationID) REFERENCES Organisations(OrganisationID);
+ALTER TABLE VideoGames ADD CONSTRAINT GameOrgFKey FOREIGN KEY (OrganisationID) REFERENCES Developers(OrganisationID);
 
 ALTER TABLE Coaches ADD CONSTRAINT CoachTeamFKey FOREIGN KEY (TeamID) REFERENCES Teams(OrganisationID);
 ALTER TABLE Coaches ADD CONSTRAINT CoachGameFKey FOREIGN KEY (GameID) REFERENCES VideoGames(GameID);
