@@ -52,7 +52,56 @@ def GetEventVideoGames(cur, con):
 
 def GetEventRanklist(cur, con):
     """ Gets information about the top three teams for an event """
-    raise NotImplementedError
+    row = {}
+    row["EventID"] = input(
+        "Enter the EventID of the event to get the ranklist: ")
+
+    # Query to be executed
+    query = """WITH Placements (Position, TeamID)
+                 AS (
+                   SELECT "FirstPlace" AS Position,
+                          FirstPlace AS TeamID
+                     FROM Ranklist
+                    WHERE EventID = %(EventID)s
+                   UNION ALL
+                   SELECT "SecondPlace" AS Position,
+                          SecondPlace AS TeamID
+                     FROM Ranklist
+                    WHERE EventID = %(EventID)s
+                   UNION ALL
+                   SELECT "ThirdPlace" AS Position,
+                          ThirdPlace AS TeamID
+                     FROM Ranklist
+                    WHERE EventID = %(EventID)s
+                 )
+               SELECT Placements.Position,
+                      Organisations.*,
+                      Teams.Manager
+                 FROM Teams
+                 JOIN Placements
+                   ON Placements.TeamID = Teams.OrganisationID
+                 JOIN Organisations
+                   ON Teams.OrganisationID = Organisations.OrganisationID
+            """
+
+    print("\nExecuting")
+    print(query)
+
+    # Execute query
+    cur.execute(query, row)
+
+    # Print the Ranlist
+    headers = ["Position", "OrganisationID", "Manager", "Name",
+               "Headquarters", "Founded", "Earnings"]
+    rows = []
+    while True:
+        res = cur.fetchone()
+        if res is None:
+            break
+        rows.append([res[header] for header in headers])
+
+    print(tabulate(rows, headers=headers, tablefmt="orgtbl"))
+    print("")
 
 
 def GetPlayerTeams(cur, con):
@@ -62,7 +111,37 @@ def GetPlayerTeams(cur, con):
 
 def GetCoaches(cur, con):
     """ Gets all the coaches for a team and game """
-    raise NotImplementedError
+    row = {}
+    row["TeamID"] = input(
+        "Enter the TeamID of the team to find the coach for: ")
+    row["GameID"] = input(
+        "Enter the GameID of the game to find who coached "
+        f"Team {row['TeamID']} to play this game: ")
+
+    # Query to be executed
+    query = """SELECT *
+                 FROM Coaches
+                WHERE TeamID = %(TeamID)s
+                  AND GameID = %(GameID)s
+            """
+
+    print("\nExecuting")
+    print(query)
+
+    # Execute query
+    cur.execute(query, row)
+
+    # Print the coaches
+    headers = ["Name", "StartDate", "EndDate"]
+    rows = []
+    while True:
+        res = cur.fetchone()
+        if res is None:
+            break
+        rows.append([res[header] for header in headers])
+
+    print(tabulate(rows, headers=headers, tablefmt="orgtbl"))
+    print("")
 
 
 def ReportHandler(cur, con):
