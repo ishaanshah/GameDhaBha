@@ -20,7 +20,7 @@ def dispatch(ch):
     elif ch == 2:
         UpdateHandler(cur, con)
     elif ch == 3:
-        raise NotImplementedError
+        DeleteHandler(cur, con)
     elif ch == 4:
         ProjectHandler(cur, con)
     elif ch == 5:
