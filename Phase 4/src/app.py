@@ -7,6 +7,7 @@ from insert import InsertHandler
 from update import UpdateHandler
 from search import SearchHandler
 from project import ProjectHandler
+from aggregate import AggregateHandler
 from report import ReportHandler
 
 
@@ -24,7 +25,7 @@ def dispatch(ch):
     elif ch == 4:
         ProjectHandler(cur, con)
     elif ch == 5:
-        raise NotImplementedError
+        AggregateHandler(cur, con)
     elif ch == 6:
         SearchHandler(cur, con)
     elif ch == 7:
