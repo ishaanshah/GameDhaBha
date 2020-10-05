@@ -106,7 +106,34 @@ def GetEventRanklist(cur, con):
 
 def GetPlayerTeams(cur, con):
     """ Gets all the teams that the player is a part of """
-    raise NotImplementedError
+    row = {}
+    row["PlayerID"] = input(
+        "Enter the PlayerID of the player to find the teams the player is/was a part of: ")
+    
+    # Query to be executed
+    query = """WITH PlayerTeamIDs (TeamID, PlayerID, GameID)
+                AS (
+                    SELECT OrganisationID, PlayerID, GameID
+                    FROM Played
+                    WHERE PlayerID = %(PlayerID)s
+                )
+                SELECT PlayerTeamIDs.PlayerID,
+                        PlayerTeamIDs.TeamID,
+                        PlayerTeamIDs.GameID,
+                        Organisations.Name
+                        
+                FROM PlayerTeamIDs
+                JOIN Organisations
+                ON PlayerTeamIDs.TeamID = Organisations.OrganisationID
+                JOIN Teams
+                ON PlayerTeamIDs.TeamID = Teams.OrganisationID
+            """
+
+    print("\nExecuting")
+    print(query)
+
+    # Execute query
+    cur.execute(query, row)
 
 
 def GetCoaches(cur, con):
