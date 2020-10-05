@@ -121,6 +121,12 @@ def InsertESportEvent(cur, con):
     # Execute Query
     cur.execute(query, row)
 
+    # Get ID of last inserted Event
+    cur.execute("SELECT LAST_INSERT_ID() AS EventID")
+
+    # Insert organiser into the Organised table
+    InsertOrganisationOfEvent(cur, con, cur.fetchone()["EventID"])
+
 
 def CreateRanklist(cur, con):
     """ Creates a ranklist for an ESportEvent. """
@@ -204,21 +210,25 @@ def InsertCoach(cur, con):
     # Executing query
     cur.execute(query, row)
 
+
 def InsertParticipationOfPlayerInEvent(cur, con):
-    """ Inserts into the database, the played entity. """
+    """ Inserts the played relationship into the database """
     # Get the information
-    print("Enter the required information: ")
     row = {}
-    row["OrganisationID"] = input("Enter the Organisation ID of the participating team: ")
-    row["EventID"] = input("Enter the ID of the ESportEvent the participation is being done in: ")
-    row["PlayerID"] = input("Enter the ID of the participating player: ")
-    row["GameID"] = input("Enter the VideoGameID of the Video Game the team is going to play: ")
+    row["OrganisationID"] = input(
+        "Enter the Team ID of the participating team: ") or None
+    row["EventID"] = input(
+        "Enter the ID of the ESportEvent the participation is being done in: ") or None
+    row["PlayerID"] = input(
+        "Enter the ID of the participating player: ") or None
+    row["GameID"] = input(
+        "Enter the GameID of the Video Game the team is going to play: ") or None
 
     # Query to be executed
-    query = """
-            INSERT IGNORE INTO
-            Played (OrganisationID, EventID, PlayerID, GameID)
-            VALUES (%(OrganisationID)s, %(EventID)s, %(PlayerID)s, %(GameID)s)
+    query = """INSERT INTO Played (OrganisationID, EventID,
+                                   PlayerID, GameID)
+                    VALUES (%(OrganisationID)s, %(EventID)s,
+                            %(PlayerID)s, %(GameID)s)
             """
 
     print("\nExecuting")
@@ -227,20 +237,19 @@ def InsertParticipationOfPlayerInEvent(cur, con):
     # Executing query
     cur.execute(query, row)
 
-def InsertOrganisationOfEvent (cur, con):
-    """ Inserts into the entity Organised. """
-    # Get the informatin
-    print("Enter the required information: ")
+
+def InsertOrganisationOfEvent(cur, con, event_id: int):
+    """ Inserts the organised relationship into the database """
+    # Get information about the organiser
     row = {}
     row["OrganisationID"] = input(
-        "Enter the Organisation ID of the Organisation which is conducting the event: ")
-    row["EventID"] = input("Enter the Event ID of the event being conducted: ")
+        "Enter the Organisation ID of the Organisation "
+        "which is conducting the event: ") or None
+    row["EventID"] = event_id
 
     # Query to be executed
-    query = """
-            INSERT INTO
-            Organised (OrganisationID, EventID)
-            VALUES (%(OrganisationID)s, %(EventID)s)
+    query = """INSERT INTO Organised (OrganisationID, EventID)
+                    VALUES (%(OrganisationID)s, %(EventID)s)
             """
 
     print("\n Executing")
