@@ -45,12 +45,16 @@ def InsertVideoGame(cur, con):
         "Enter the number of players currently playing the game: ") or None
     row["OrganisationID"] = input(
         "Enter the OrganisationID of the Organisation that created the game: ") or None
+    row["Platforms"] = input("Enter comma seperated list of platforms "
+                             "on which the game has been released: ") or None
+
+    platforms = [platform.strip() for platform in row["Platforms"].split(",")]
 
     # Query to be executed
     query = """INSERT INTO VideoGames (Name, ReleaseDate, LatestPatch,
-                                        RegisteredPlayers, OrganisationID)
+                                       RegisteredPlayers, OrganisationID)
                     VALUES (%(Name)s, %(ReleaseDate)s, %(LatestPatch)s,
-                             %(RegisteredPlayers)s, %(OrganisationID)s)
+                            %(RegisteredPlayers)s, %(OrganisationID)s)
             """
 
     print("\nExecuting")
@@ -58,6 +62,16 @@ def InsertVideoGame(cur, con):
 
     # Execute query
     cur.execute(query, row)
+
+    # Get ID of last inserted video game
+    cur.execute("SELECT LAST_INSERT_ID() AS GameID")
+    game_id = cur.fetchone()["GameID"]
+    for platform in platforms:
+        if platform:
+            cur.execute("""
+                INSERT INTO Platforms (GameID, Platform)
+                     VALUES (%s, %s)
+            """, (game_id, platform))
 
 
 def InsertDeveloper(cur, con):
