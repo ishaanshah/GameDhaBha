@@ -90,7 +90,7 @@ def GetEventRanklist(cur, con):
     # Execute query
     cur.execute(query, row)
 
-    # Print the Ranlist
+    # Print the Ranklist
     headers = ["Position", "OrganisationID", "Manager", "Name",
                "Headquarters", "Founded", "Earnings"]
     rows = []
@@ -118,15 +118,19 @@ def GetPlayerTeams(cur, con):
                     WHERE PlayerID = %(PlayerID)s
                 )
                 SELECT PlayerTeamIDs.PlayerID,
-                        PlayerTeamIDs.TeamID,
-                        PlayerTeamIDs.GameID,
-                        Organisations.Name
+                        Organisations.Name,
+                        VideoGames.Name,
+                        Players.Username
                         
                 FROM PlayerTeamIDs
                 JOIN Organisations
                 ON PlayerTeamIDs.TeamID = Organisations.OrganisationID
                 JOIN Teams
                 ON PlayerTeamIDs.TeamID = Teams.OrganisationID
+                JOIN VideoGames
+                ON PlayerTeamIDs.GameID = VideoGames.GameID
+                JOIN Players
+                ON PlayerTeamIDs.PlayerID = Players.PlayerID
             """
 
     print("\nExecuting")
@@ -134,6 +138,18 @@ def GetPlayerTeams(cur, con):
 
     # Execute query
     cur.execute(query, row)
+
+    # Print the Teams
+    headers = ["Username", "Name", "VideoGames.Name"]
+    rows = []
+    while True:
+        res = cur.fetchone()
+        if res is None:
+            break
+        rows.append([res[header] for header in headers])
+
+    print(tabulate(rows, headers=headers, tablefmt="orgtbl"))
+    print("")
 
 
 def GetCoaches(cur, con):
