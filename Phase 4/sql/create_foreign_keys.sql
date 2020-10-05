@@ -1,11 +1,11 @@
 BEGIN;
 
-ALTER TABLE VideoGames ADD CONSTRAINT GameOrgFKey FOREIGN KEY (OrganisationID) REFERENCES Organisations(OrganisationID);
+ALTER TABLE VideoGames ADD CONSTRAINT GameOrgFKey FOREIGN KEY (OrganisationID) REFERENCES Developers(OrganisationID);
 
 ALTER TABLE Coaches ADD CONSTRAINT CoachTeamFKey FOREIGN KEY (TeamID) REFERENCES Teams(OrganisationID);
 ALTER TABLE Coaches ADD CONSTRAINT CoachGameFKey FOREIGN KEY (GameID) REFERENCES VideoGames(GameID);
 
-ALTER TABLE Played ADD CONSTRAINT PlayedOrgFKey FOREIGN KEY (OrganisationID) REFERENCES Organisations(OrganisationID);
+ALTER TABLE Played ADD CONSTRAINT PlayedOrgFKey FOREIGN KEY (OrganisationID) REFERENCES Teams(OrganisationID);
 ALTER TABLE Played ADD CONSTRAINT PlayedEventFKey FOREIGN KEY (EventID) REFERENCES ESportEvents(EventID);
 ALTER TABLE Played ADD CONSTRAINT PlayedPlayerFKey FOREIGN KEY (PlayerID) REFERENCES Players(PlayerID);
 ALTER TABLE Played ADD CONSTRAINT PlayedGameFKey FOREIGN KEY (GameID) REFERENCES VideoGames(GameID);

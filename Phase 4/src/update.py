@@ -46,15 +46,49 @@ def AcquirementOfOrganization(cur, con):
 
 
 def UpdateESportEventStartDate(cur, con):
-    raise NotImplementedError
+    """ Updates the Start Date of en ESportEvent """
+    # Get details about the update
+    row = {}
+    row["EventID"] = input(
+        "Enter the EventID of the ESportEvent whose start date needs to be changed: ") or None
+    row["StartDate"] = input(
+        "Enter the new start date of the ESportEvent: ") or None
+
+    query = """UPDATE ESportEvents
+                  SET StartDate = %(StartDate)s
+                WHERE EventID = %(EventID)s
+            """
+
+    print("\nExecuting")
+    print(query)
+
+    # Execute Query
+    cur.execute(query, row)
 
 
 def UpdateESportEventEndDate(cur, con):
-    raise NotImplementedError
+    """ Updates the End Date of en ESportEvent """
+    # Get details about the update
+    row = {}
+    row["EventID"] = input(
+        "Enter the EventID of the ESportEvent whose end date needs to be changed: ") or None
+    row["EndDate"] = input(
+        "Enter the new end date of the ESportEvent: ") or None
+
+    query = """UPDATE ESportEvents
+                  SET EndDate = %(EndDate)s
+                WHERE EventID = %(EventID)s
+            """
+
+    print("\nExecuting")
+    print(query)
+
+    # Execute Query
+    cur.execute(query, row)
 
 
 def UpdateESportEventPrizePool(cur, con):
-    """ Updates the latest patch for a VideoGame in the database """
+    """ Updates the prize pool for an eSport Event in the database """
     # Get the prize pool
     row = {}
     row["EventToUpdate"] = input(
@@ -76,7 +110,25 @@ def UpdateESportEventPrizePool(cur, con):
 
 
 def UpdatePlayerWinnings(cur, con):
-    raise NotImplementedError
+    """ Updates the winnings for a Player in the database """
+    # Get the winnings
+    row = {}
+    row["PlayerToUpdate"] = input(
+        "Enter the Player ID of the Player whose "
+        "winnings has to be updated: ") or None
+    row["NewWinnings"] = input(
+        "Enter the updated winnings of the Player in USD: ") or None
+
+    query = """UPDATE Players
+                  SET Winnings = %(NewWinnings)s
+                WHERE PlayerID = %(PlayerToUpdate)s
+            """
+
+    print("\nExecuting")
+    print(query)
+
+    # Execute Query
+    cur.execute(query, row)
 
 
 def UpdateHandler(cur, con):
