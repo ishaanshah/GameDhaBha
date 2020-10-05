@@ -47,8 +47,44 @@ def GetEventTeams(cur, con):
 
 def GetEventVideoGames(cur, con):
     """ Gets all the games in an event """
-    raise NotImplementedError
+    row = {}
+    row["EventID"] = input(
+        "Enter the EventID of the event to get the list of games in the event: ")
+    
+    # Query to be executed
+    query = """
+            WITH GamesInEvent (EventID, GameID)
+            AS (
+                SELECT EventID, GameID
+                FROM Played
+                WHERE EventID = %(EventID)s
+            )
+            SELECT ESportEvents.Name,
+                    VideoGames.Name
+            FROM GamesInEvent
+            JOIN VideoGames
+            ON GamesInEvent.GameID = VideoGames.GameID
+            JOIN ESportEvents
+            ON GamesInEvent.EventID = ESportEvents.EventID
+            """
 
+    print("\nExecuting")
+    print(query)
+
+    # Execute query
+    cur.execute(query, row)
+
+    # Print the Games
+    headers = ["Name", "VideoGames.Name"]
+    rows = []
+    while True:
+        res = cur.fetchone()
+        if res is None:
+            break
+        rows.append([res[header] for header in headers])
+
+    print(tabulate(rows, headers=headers, tablefmt="orgtbl"))
+    print("")
 
 def GetEventRanklist(cur, con):
     """ Gets information about the top three teams for an event """
