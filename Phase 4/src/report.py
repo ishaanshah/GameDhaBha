@@ -59,7 +59,8 @@ def GetEventVideoGames(cur, con):
                 FROM Played
                 WHERE EventID = %(EventID)s
             )
-            SELECT ESportEvents.Name,
+            SELECT DISTINCTROW
+                    ESportEvents.Name,
                     VideoGames.Name
             FROM GamesInEvent
             JOIN VideoGames
