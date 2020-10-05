@@ -37,67 +37,29 @@ def GetGamesByDeveloper(cur, con):
 
 def GetTeamParticipation(cur, con):
     """ Gets all the events that a team has participated in """
-    row = {}
-    row["TeamID"] = input(
-        "Enter the TeamID of the team to get the list of events: ")
-    
-    # Query to be executed
-    query = """
-            WITH EventList (EventID)
-            AS (
-                SELECT DISTINCT
-                        EventID
-                FROM Played
-                WHERE OrganisationID = %(TeamID)s
-            )
-            SELECT DISTINCTROW
-                ESportEvents.Name,
-                ESportEvents.StartDate,
-                ESportEvents.EndDate
-            FROM EventList
-            JOIN ESportEvents
-            ON EventList.EventID = ESportEvents.EventID
-            """
-
-    print("\nExecuting")
-    print(query)
-
-    # Execute query
-    cur.execute(query, row)
-
-    # Print the Events
-    headers = ["Name", "StartDate", "EndDate"]
-    rows = []
-    while True:
-        res = cur.fetchone()
-        if res is None:
-            break
-        rows.append([res[header] for header in headers])
-
-    print(tabulate(rows, headers=headers, tablefmt="orgtbl"))
-    print("")
+    raise NotImplementedError
 
 
 def GetEventTeams(cur, con):
     """ Gets all the teams participating in an event """
     row = {}
     row["EventID"] = input(
-        "Enter the EventID of the event to get the list of teams in the event: ")
-    
+        "Enter the EventID of the event to get the "
+        "list of teams in the event: ") or None
+
     # Query to be executed
     query = """
             WITH TeamsList (TeamID)
-            AS (
-                SELECT DISTINCT
-                        OrganisationID
-                FROM Played
-                WHERE EventID = %(EventID)s
-            )
-            SELECT DISTINCT
-                    Organisations.Name
-            FROM TeamsList
-            JOIN Organisations
-            ON TeamsList.TeamID = Organisations.OrganisationID
+              AS (
+                SELECT DISTINCT OrganisationID
+                  FROM Played
+                 WHERE EventID = %(EventID)s
+              )
+            SELECT TeamsList.TeamID,
+                   Organisations.Name AS TeamName
+              FROM TeamsList
+              JOIN Organisations
+                ON TeamsList.TeamID = Organisations.OrganisationID
             """
 
     print("\nExecuting")
@@ -107,7 +69,7 @@ def GetEventTeams(cur, con):
     cur.execute(query, row)
 
     # Print the Teams
-    headers = ["Name"]
+    headers = ["TeamID", "TeamName"]
     rows = []
     while True:
         res = cur.fetchone()
@@ -123,24 +85,22 @@ def GetEventVideoGames(cur, con):
     """ Gets all the games in an event """
     row = {}
     row["EventID"] = input(
-        "Enter the EventID of the event to get the list of games in the event: ")
-    
+        "Enter the EventID of the event to get the "
+        "list of games in the event: ") or None
+
     # Query to be executed
     query = """
-            WITH GamesInEvent (EventID, GameID)
-            AS (
-                SELECT EventID, GameID
-                FROM Played
-                WHERE EventID = %(EventID)s
-            )
-            SELECT DISTINCTROW
-                    ESportEvents.Name,
-                    VideoGames.Name
-            FROM GamesInEvent
-            JOIN VideoGames
-            ON GamesInEvent.GameID = VideoGames.GameID
-            JOIN ESportEvents
-            ON GamesInEvent.EventID = ESportEvents.EventID
+            WITH GamesInEvent (GameID)
+              AS (
+                SELECT DISTINCT GameID
+                  FROM Played
+                 WHERE EventID = %(EventID)s
+              )
+            SELECT VideoGames.GameID,
+                   VideoGames.Name AS VideoGameName
+              FROM GamesInEvent
+              JOIN VideoGames
+                ON GamesInEvent.GameID = VideoGames.GameID
             """
 
     print("\nExecuting")
@@ -150,7 +110,7 @@ def GetEventVideoGames(cur, con):
     cur.execute(query, row)
 
     # Print the Games
-    headers = ["Name", "VideoGames.Name"]
+    headers = ["GameID", "VideoGameName"]
     rows = []
     while True:
         res = cur.fetchone()
@@ -160,6 +120,7 @@ def GetEventVideoGames(cur, con):
 
     print(tabulate(rows, headers=headers, tablefmt="orgtbl"))
     print("")
+
 
 def GetEventRanklist(cur, con):
     """ Gets information about the top three teams for an event """
@@ -219,29 +180,21 @@ def GetPlayerTeams(cur, con):
     """ Gets all the teams that the player is a part of """
     row = {}
     row["PlayerID"] = input(
-        "Enter the PlayerID of the player to find the teams the player is/was a part of: ")
-    
+        "Enter the PlayerID of the player to find the "
+        "teams the player is/was a part of: ") or None
+
     # Query to be executed
-    query = """WITH PlayerTeamIDs (TeamID, PlayerID, GameID)
-                AS (
-                    SELECT OrganisationID, PlayerID, GameID
-                    FROM Played
-                    WHERE PlayerID = %(PlayerID)s
-                )
-                SELECT PlayerTeamIDs.PlayerID,
-                        Organisations.Name,
-                        VideoGames.Name,
-                        Players.Username
-                        
-                FROM PlayerTeamIDs
-                JOIN Organisations
-                ON PlayerTeamIDs.TeamID = Organisations.OrganisationID
-                JOIN Teams
-                ON PlayerTeamIDs.TeamID = Teams.OrganisationID
-                JOIN VideoGames
-                ON PlayerTeamIDs.GameID = VideoGames.GameID
-                JOIN Players
-                ON PlayerTeamIDs.PlayerID = Players.PlayerID
+    query = """WITH PlayerTeamIDs (TeamID)
+                 AS (
+                    SELECT DISTINCT OrganisationID
+                      FROM Played
+                     WHERE PlayerID = %(PlayerID)s
+                  )
+                SELECT PlayerTeamIDs.TeamID,
+                       Organisations.Name AS TeamName,
+                  FROM PlayerTeamIDs
+                  JOIN Organisations
+                    ON PlayerTeamIDs.TeamID = Organisations.OrganisationID
             """
 
     print("\nExecuting")
@@ -251,7 +204,7 @@ def GetPlayerTeams(cur, con):
     cur.execute(query, row)
 
     # Print the Teams
-    headers = ["Username", "Name", "VideoGames.Name"]
+    headers = ["TeamID", "TeamName"]
     rows = []
     while True:
         res = cur.fetchone()
@@ -267,10 +220,10 @@ def GetCoaches(cur, con):
     """ Gets all the coaches for a team and game """
     row = {}
     row["TeamID"] = input(
-        "Enter the TeamID of the team to find the coach for: ")
+        "Enter the TeamID of the team to find the coach for: ") or None
     row["GameID"] = input(
         "Enter the GameID of the game to find who coached "
-        f"Team {row['TeamID']} to play this game: ")
+        f"Team {row['TeamID']} to play this game: ") or None
 
     # Query to be executed
     query = """SELECT *
