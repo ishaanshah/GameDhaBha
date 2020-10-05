@@ -10,6 +10,18 @@ def GetYoungestPlayer(cur, con):
                  FROM Players
             """
 
+    query = """
+            SELECT *
+            FROM (
+                SELECT *, TIMESTAMPDIFF(YEAR, DateOfBirth, CURDATE()) AS Age
+                FROM Players
+            ) AS DervivedTable1
+            NATURAL JOIN (
+                SELECT MIN(TIMESTAMPDIFF(YEAR, DateOfBirth, CURDATE())) AS Age
+                FROM Players
+            ) AS DerivedTable2
+            """
+
     print("\nExecuting")
     print(query)
 
@@ -17,11 +29,16 @@ def GetYoungestPlayer(cur, con):
     cur.execute(query)
 
     # Calculate and print the player with minimum age
-    headers = ["Age"]
+    headers = ["Username", "PlayerID", "FirstName", "LastName",
+            "Winnings", "Nationality", "DateOfBirth", "Age"]
     rows = []
-    res = cur.fetchone()
-    if res is not None:
-        rows.append([res["MinAge"]])
+
+    while True:
+        res = cur.fetchone()
+        if res is None:
+            break
+        rows.append([res[header] for header in headers])
+
 
     print(tabulate(rows, headers=headers, tablefmt="orgtbl"))
     print("")
