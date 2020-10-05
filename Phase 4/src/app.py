@@ -3,6 +3,7 @@ import pymysql
 import pymysql.cursors
 import sys
 
+from delete import DeleteHandler
 from insert import InsertHandler
 from update import UpdateHandler
 from search import SearchHandler
@@ -21,7 +22,7 @@ def dispatch(ch):
     elif ch == 2:
         UpdateHandler(cur, con)
     elif ch == 3:
-        raise NotImplementedError
+        DeleteHandler(cur, con)
     elif ch == 4:
         ProjectHandler(cur, con)
     elif ch == 5:
