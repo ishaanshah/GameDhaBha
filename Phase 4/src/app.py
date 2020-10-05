@@ -5,29 +5,10 @@ import sys
 
 from insert import InsertHandler
 from update import UpdateHandler
+from search import SearchHandler
 from project import ProjectHandler
 from aggregate import AggregateHandler
-
-
-def option2():
-    """
-    Function to implement option 1
-    """
-    print("Not implemented")
-
-
-def option3():
-    """
-    Function to implement option 2
-    """
-    print("Not implemented")
-
-
-def option4():
-    """
-    Function to implement option 3
-    """
-    print("Not implemented")
+from report import ReportHandler
 
 
 def dispatch(ch):
@@ -35,22 +16,26 @@ def dispatch(ch):
     Function that maps helper functions to option entered
     """
 
-    if(ch == 1):
+    if ch == 1:
         InsertHandler(cur, con)
-    elif(ch == 2):
+    elif ch == 2:
         UpdateHandler(cur, con)
-    elif(ch == 3):
-        option3()
-    elif(ch == 4):
+    elif ch == 3:
+        raise NotImplementedError
+    elif ch == 4:
         ProjectHandler(cur, con)
-    elif(ch == 5):
+    elif ch == 5:
         AggregateHandler(cur, con)
+    elif ch == 6:
+        SearchHandler(cur, con)
+    elif ch == 7:
+        ReportHandler(cur, con)
     else:
         print("Error: Invalid Option")
 
 
 # Global
-while(1):
+while True:
     tmp = sp.call('clear', shell=True)
 
     # Can be skipped if you want to hard core username and password
@@ -76,17 +61,19 @@ while(1):
         tmp = input("Enter any key to CONTINUE>")
 
         with con.cursor() as cur:
-            while(1):
+            while True:
                 tmp = sp.call('clear', shell=True)
                 print("1. Insert")
                 print("2. Update")
-                print("3. Option 3")
+                print("3. Delete")
                 print("4. Project")
                 print("5. Aggregate")
-                print("6. Quit")
+                print("6. Search")
+                print("7. Report")
+                print("8. Quit")
                 ch = int(input("Enter choice: "))
                 tmp = sp.call('clear', shell=True)
-                if ch == 6:
+                if ch == 8:
                     exit(0)
                 else:
                     dispatch(ch)

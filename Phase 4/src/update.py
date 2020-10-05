@@ -88,7 +88,7 @@ def UpdateESportEventEndDate(cur, con):
 
 
 def UpdateESportEventPrizePool(cur, con):
-    """ Updates the latest patch for a VideoGame in the database """
+    """ Updates the prize pool for an eSport Event in the database """
     # Get the prize pool
     row = {}
     row["EventToUpdate"] = input(
@@ -110,7 +110,25 @@ def UpdateESportEventPrizePool(cur, con):
 
 
 def UpdatePlayerWinnings(cur, con):
-    raise NotImplementedError
+    """ Updates the winnings for a Player in the database """
+    # Get the winnings
+    row = {}
+    row["PlayerToUpdate"] = input(
+        "Enter the Player ID of the Player whose "
+        "winnings has to be updated: ") or None
+    row["NewWinnings"] = input(
+        "Enter the updated winnings of the Player in USD: ") or None
+
+    query = """UPDATE Players
+                  SET Winnings = %(NewWinnings)s
+                WHERE PlayerID = %(PlayerToUpdate)s
+            """
+
+    print("\nExecuting")
+    print(query)
+
+    # Execute Query
+    cur.execute(query, row)
 
 
 def UpdateHandler(cur, con):
