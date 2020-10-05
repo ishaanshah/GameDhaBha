@@ -271,7 +271,6 @@ def InsertHandler(cur, con):
         InsertPlayer,
         InsertCoach,
         InsertParticipationOfPlayerInEvent,
-        InsertOrganisationOfEvent
     ]
 
     # Get operation to perform
@@ -284,10 +283,9 @@ def InsertHandler(cur, con):
     print("07. Insert Player")
     print("08. Insert Coach")
     print("09. InsertParticipationOfPlayerInEvent")
-    print("10. InsertOrganisationOfEvent")
-    print("11. Go Back")
+    print("10. Go Back")
     ch = int(input("Enter choice: "))
-    if ch == 11:
+    if ch == 10:
         return
 
     try:
