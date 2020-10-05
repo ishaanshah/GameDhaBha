@@ -121,6 +121,12 @@ def InsertESportEvent(cur, con):
     # Execute Query
     cur.execute(query, row)
 
+    # Get ID of last inserted Event
+    cur.execute("SELECT LAST_INSERT_ID() AS EventID")
+
+    # Insert organiser into the Organised table
+    InsertOrganisationOfEvent(cur, con, cur.fetchone()["EventID"])
+
 
 def CreateRanklist(cur, con):
     """ Creates a ranklist for an ESportEvent. """
@@ -205,6 +211,54 @@ def InsertCoach(cur, con):
     cur.execute(query, row)
 
 
+def InsertParticipationOfPlayerInEvent(cur, con):
+    """ Inserts the played relationship into the database """
+    # Get the information
+    row = {}
+    row["OrganisationID"] = input(
+        "Enter the Team ID of the participating team: ") or None
+    row["EventID"] = input(
+        "Enter the ID of the ESportEvent the participation is being done in: ") or None
+    row["PlayerID"] = input(
+        "Enter the ID of the participating player: ") or None
+    row["GameID"] = input(
+        "Enter the GameID of the Video Game the team is going to play: ") or None
+
+    # Query to be executed
+    query = """INSERT INTO Played (OrganisationID, EventID,
+                                   PlayerID, GameID)
+                    VALUES (%(OrganisationID)s, %(EventID)s,
+                            %(PlayerID)s, %(GameID)s)
+            """
+
+    print("\nExecuting")
+    print(query)
+
+    # Executing query
+    cur.execute(query, row)
+
+
+def InsertOrganisationOfEvent(cur, con, event_id: int):
+    """ Inserts the organised relationship into the database """
+    # Get information about the organiser
+    row = {}
+    row["OrganisationID"] = input(
+        "Enter the Organisation ID of the Organisation "
+        "which is conducting the event: ") or None
+    row["EventID"] = event_id
+
+    # Query to be executed
+    query = """INSERT INTO Organised (OrganisationID, EventID)
+                    VALUES (%(OrganisationID)s, %(EventID)s)
+            """
+
+    print("\n Executing")
+    print(query)
+
+    # Execute query
+    cur.execute(query, row)
+
+
 def InsertHandler(cur, con):
     # Define handlers
     handlers = [
@@ -215,21 +269,23 @@ def InsertHandler(cur, con):
         InsertESportEvent,
         CreateRanklist,
         InsertPlayer,
-        InsertCoach
+        InsertCoach,
+        InsertParticipationOfPlayerInEvent,
     ]
 
     # Get operation to perform
-    print("1. Insert Organisation")
-    print("2. Insert Video Game")
-    print("3. Insert Developer")
-    print("4. Insert Team")
-    print("5. Insert ESport Event")
-    print("6. Create Ranklist")
-    print("7. Insert Player")
-    print("8. Insert Coach")
-    print("9. Go Back")
+    print("01. Insert Organisation")
+    print("02. Insert Video Game")
+    print("03. Insert Developer")
+    print("04. Insert Team")
+    print("05. Insert ESport Event")
+    print("06. Create Ranklist")
+    print("07. Insert Player")
+    print("08. Insert Coach")
+    print("09. InsertParticipationOfPlayerInEvent")
+    print("10. Go Back")
     ch = int(input("Enter choice: "))
-    if ch == 9:
+    if ch == 10:
         return
 
     try:
