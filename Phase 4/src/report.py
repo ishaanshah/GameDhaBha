@@ -42,7 +42,43 @@ def GetTeamParticipation(cur, con):
 
 def GetEventTeams(cur, con):
     """ Gets all the teams participating in an event """
-    raise NotImplementedError
+    row = {}
+    row["EventID"] = input(
+        "Enter the EventID of the event to get the list of teams in the event: ")
+    
+    # Query to be executed
+    query = """
+            WITH TeamsList (TeamID)
+            AS (
+                SELECT DISTINCT
+                        OrganisationID
+                FROM Played
+                Where EventID = %(EventID)s
+            )
+            SELECT DISTINCT
+                    Organisations.Name
+            FROM TeamsList
+            JOIN Organisations
+            ON TeamsList.TeamID = Organisations.OrganisationID
+            """
+
+    print("\nExecuting")
+    print(query)
+
+    # Execute query
+    cur.execute(query, row)
+
+    # Print the Teams
+    headers = ["Name"]
+    rows = []
+    while True:
+        res = cur.fetchone()
+        if res is None:
+            break
+        rows.append([res[header] for header in headers])
+
+    print(tabulate(rows, headers=headers, tablefmt="orgtbl"))
+    print("")
 
 
 def GetEventVideoGames(cur, con):
