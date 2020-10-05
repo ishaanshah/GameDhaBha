@@ -204,6 +204,51 @@ def InsertCoach(cur, con):
     # Executing query
     cur.execute(query, row)
 
+def InsertParticipationOfPlayerInEvent(cur, con):
+    """ Inserts into the database, the played entity. """
+    # Get the information
+    print("Enter the required information: ")
+    row = {}
+    row["OrganisationID"] = input("Enter the Organisation ID of the participating team: ")
+    row["EventID"] = input("Enter the ID of the ESportEvent the participation is being done in: ")
+    row["PlayerID"] = input("Enter the ID of the participating player: ")
+    row["GameID"] = input("Enter the VideoGameID of the Video Game the team is going to play: ")
+
+    # Query to be executed
+    query = """
+            INSERT INTO
+            Played (OrganisationID, EventID, PlayerID, GameID)
+            VALUES (%(OrganisationID)s, %(EventID)s, %(PlayerID)s, %(GameID)s)
+            """
+
+    print("\nExecuting")
+    print(query)
+
+    # Executing query
+    cur.execute(query, row)
+
+def InsertOrganisationOfEvent (cur, con):
+    """ Inserts into the entity Organised. """
+    # Get the informatin
+    print("Enter the required information: ")
+    row = {}
+    row["OrganisationID"] = input(
+        "Enter the Organisation ID of the Organisation which is conducting the event: ")
+    row["EventID"] = input("Enter the Event ID of the event being conducted: ")
+
+    # Query to be executed
+    query = """
+            INSERT INTO
+            Organised (OrganisationID, EventID)
+            VALUES (%(OrganisationID)s, %(EventID)s)
+            """
+
+    print("\n Executing")
+    print(query)
+
+    # Execute query
+    cur.execute(query, row)
+
 
 def InsertHandler(cur, con):
     # Define handlers
@@ -215,21 +260,25 @@ def InsertHandler(cur, con):
         InsertESportEvent,
         CreateRanklist,
         InsertPlayer,
-        InsertCoach
+        InsertCoach,
+        InsertParticipationOfPlayerInEvent,
+        InsertOrganisationOfEvent
     ]
 
     # Get operation to perform
-    print("1. Insert Organisation")
-    print("2. Insert Video Game")
-    print("3. Insert Developer")
-    print("4. Insert Team")
-    print("5. Insert ESport Event")
-    print("6. Create Ranklist")
-    print("7. Insert Player")
-    print("8. Insert Coach")
-    print("9. Go Back")
+    print("01. Insert Organisation")
+    print("02. Insert Video Game")
+    print("03. Insert Developer")
+    print("04. Insert Team")
+    print("05. Insert ESport Event")
+    print("06. Create Ranklist")
+    print("07. Insert Player")
+    print("08. Insert Coach")
+    print("09. InsertParticipationOfPlayerInEvent")
+    print("10. InsertOrganisationOfEvent")
+    print("11. Go Back")
     ch = int(input("Enter choice: "))
-    if ch == 9:
+    if ch == 11:
         return
 
     try:
