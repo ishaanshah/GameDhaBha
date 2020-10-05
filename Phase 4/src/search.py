@@ -47,7 +47,42 @@ def SearchPlayerByName(cur, con):
 
 
 def SearchOrganisationByName(cur, con):
-    raise NotImplementedError
+    """ Searches for an Organisation by the name given. """
+    # Take in the input for the search query
+    search = {}
+    search["pattern"] = input("Enter the organisation's name that you are looking for: ")
+    search["pattern"] = "%" + search["pattern"] + "%"
+
+    query = """
+            SELECT *
+            FROM Organisations
+            WHERE Name LIKE %(pattern)s
+            """
+
+
+    print("\nExecuting")
+    print(query)
+
+    # Execute query
+    cur.execute(query, search)
+
+    # Print the output
+
+    headers = ["OrganisationID", "Name", "Headquarters", "Founded", "Earnings"]
+    rows = []
+
+    while True:
+        res = cur.fetchone()
+        if res is None:
+            break
+        rows.append([
+            res["OrganisationID"], res["Name"], res["Headquarters"], res["Founded"],
+            res["Earnings"]
+            ])
+
+
+    print(tabulate(rows, headers = headers, tablefmt = "orgtbl"))
+    print("")
 
 def SearchHandler(cur, con):
     # Define Handlers

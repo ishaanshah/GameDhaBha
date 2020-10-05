@@ -8,6 +8,7 @@ from insert import InsertHandler
 from update import UpdateHandler
 from search import SearchHandler
 from project import ProjectHandler
+from aggregate import AggregateHandler
 from report import ReportHandler
 
 
@@ -15,6 +16,7 @@ def dispatch(ch):
     """
     Function that maps helper functions to option entered
     """
+
     if ch == 1:
         InsertHandler(cur, con)
     elif ch == 2:
@@ -24,7 +26,7 @@ def dispatch(ch):
     elif ch == 4:
         ProjectHandler(cur, con)
     elif ch == 5:
-        raise NotImplementedError
+        AggregateHandler(cur, con)
     elif ch == 6:
         SearchHandler(cur, con)
     elif ch == 7:
@@ -34,7 +36,7 @@ def dispatch(ch):
 
 
 # Global
-while(1):
+while True:
     tmp = sp.call('clear', shell=True)
 
     # Can be skipped if you want to hard core username and password
@@ -60,7 +62,7 @@ while(1):
         tmp = input("Enter any key to CONTINUE>")
 
         with con.cursor() as cur:
-            while(1):
+            while True:
                 tmp = sp.call('clear', shell=True)
                 print("1. Insert")
                 print("2. Update")

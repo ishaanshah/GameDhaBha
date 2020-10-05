@@ -60,5 +60,5 @@ def ProjectHandler(cur, con):
         print(error)
     except Exception as error:
         con.rollback()
-        print("Failed to retrieve data form the  Database")
+        print("Failed to retrieve data form the Database")
         print(f"Error: {error}")

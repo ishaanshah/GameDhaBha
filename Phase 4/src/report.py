@@ -37,7 +37,44 @@ def GetGamesByDeveloper(cur, con):
 
 def GetTeamParticipation(cur, con):
     """ Gets all the events that a team has participated in """
-    raise NotImplementedError
+    row = {}
+    row["TeamID"] = input(
+        "Enter TeamID to get information about: ") or None
+
+    # Query to be executed
+    query = """SELECT Players.PlayerID,
+                      CONCAT(
+                        Players.FirstName,
+                        ' ',
+                        Players.LastName) AS PlayerName,
+                      ESportEvents.EventID,
+                      ESportEvents.Name AS EventName,
+                      VideoGames.GameID,
+                      VideoGames.Name AS GameName
+                 FROM Played
+                 JOIN Players
+                   ON Played.PlayerID = Players.PlayerID
+                 JOIN ESportEvents
+                   ON Played.EventID = ESportEvents.EventID
+                 JOIN VideoGames
+                   ON Played.GameID = VideoGames.GameID
+                WHERE Played.OrganisationID = %(TeamID)s
+            """
+
+    cur.execute(query, row)
+
+    # Print the teams
+    headers = ["PlayerID", "PlayerName", "EventID",
+               "EventName", "GameID", "GameName"]
+    rows = []
+    while True:
+        res = cur.fetchone()
+        if res is None:
+            break
+        rows.append([res[header] for header in headers])
+
+    print(tabulate(rows, headers=headers, tablefmt="orgtbl"))
+    print("")
 
 
 def GetEventTeams(cur, con):
