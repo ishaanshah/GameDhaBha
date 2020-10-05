@@ -6,46 +6,30 @@ import sys
 from insert import InsertHandler
 from update import UpdateHandler
 from search import SearchHandler
-
-
-def option2():
-    """
-    Function to implement option 1
-    """
-    print("Not implemented")
-
-
-def option3():
-    """
-    Function to implement option 2
-    """
-    print("Not implemented")
-
-
-def option4():
-    """
-    Function to implement option 3
-    """
-    print("Not implemented")
-
+from project import ProjectHandler
+from report import ReportHandler
 
 def dispatch(ch):
     """
     Function that maps helper functions to option entered
     """
 
-    if(ch == 1):
-        InsertHandler(cur, con)
-    elif(ch == 2):
-        UpdateHandler(cur, con)
-    elif(ch == 3):
-        option3()
-    elif(ch == 4):
-        option4()
-    elif(ch == 5):
-        SearchHandler(cur, con)
-    else:
-        print("Error: Invalid Option")
+if ch == 1:
+    InsertHandler(cur, con)
+elif ch == 2:
+    UpdateHandler(cur, con)
+elif ch == 3:
+    raise NotImplementedError
+elif ch == 4:
+    ProjectHandler(cur, con)
+elif ch == 5:
+    raise NotImplementedError
+elif ch == 6:
+    SearchHandler(cur, con)
+elif ch == 7:
+    ReportHandler(cur, con)
+else:
+    print("Error: Invalid Option"
 
 
 # Global
@@ -77,16 +61,17 @@ while(1):
         with con.cursor() as cur:
             while(1):
                 tmp = sp.call('clear', shell=True)
-                # Here taking example of Employee Mini-world
-                print("1. Insert")  # Hire an Employee
-                print("2. Update")  # Fire an Employee
-                print("3. Option 3")  # Promote Employee
-                print("4. Option 4")  # Employee Statistics
-                print("5. Search")
-                print("6. Quit")
+                print("1. Insert")
+                print("2. Update")
+                print("3. Delete")
+                print("4. Project")
+                print("5. Aggregate")
+                print("6. Search")
+                print("7. Report")
+                print("8. Quit")
                 ch = int(input("Enter choice: "))
                 tmp = sp.call('clear', shell=True)
-                if ch == 6:
+                if ch == 8:
                     exit(0)
                 else:
                     dispatch(ch)
