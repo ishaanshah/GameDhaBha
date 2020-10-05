@@ -6,10 +6,6 @@ from tabulate import tabulate
 def GetYoungestPlayer(cur, con):
     """ Gets the age of youngest player in the database """
     # Query to be executed
-    query = """SELECT MIN(TIMESTAMPDIFF(YEAR, DateOfBirth, CURDATE())) AS MinAge
-                 FROM Players
-            """
-
     query = """
             SELECT *
             FROM (
