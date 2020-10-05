@@ -20,8 +20,8 @@ CREATE TABLE `Coaches` (
   `GameID` bigint unsigned NOT NULL,
   KEY `CoachTeamFKey` (`TeamID`),
   KEY `CoachGameFKey` (`GameID`),
-  CONSTRAINT `CoachGameFKey` FOREIGN KEY (`GameID`) REFERENCES `VideoGames` (`GameID`),
-  CONSTRAINT `CoachTeamFKey` FOREIGN KEY (`TeamID`) REFERENCES `Teams` (`OrganisationID`)
+  CONSTRAINT `CoachGameFKey` FOREIGN KEY (`GameID`) REFERENCES `VideoGames` (`GameID`) ON DELETE CASCADE,
+  CONSTRAINT `CoachTeamFKey` FOREIGN KEY (`TeamID`) REFERENCES `Teams` (`OrganisationID`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 INSERT INTO `Coaches` (`Name`, `StartDate`, `EndDate`, `TeamID`, `GameID`) VALUES
@@ -35,7 +35,7 @@ CREATE TABLE `Developers` (
   `OrganisationID` bigint unsigned NOT NULL,
   `CEO` text NOT NULL,
   UNIQUE KEY `UniqueDevOrgID` (`OrganisationID`),
-  CONSTRAINT `DevOrgFKey` FOREIGN KEY (`OrganisationID`) REFERENCES `Organisations` (`OrganisationID`)
+  CONSTRAINT `DevOrgFKey` FOREIGN KEY (`OrganisationID`) REFERENCES `Organisations` (`OrganisationID`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 INSERT INTO `Developers` (`OrganisationID`, `CEO`) VALUES
@@ -88,8 +88,8 @@ CREATE TABLE `Organised` (
   `EventID` bigint unsigned NOT NULL,
   KEY `OrganisedOrgFKey` (`OrganisationID`),
   KEY `OrganisedEventFKey` (`EventID`),
-  CONSTRAINT `OrganisedEventFKey` FOREIGN KEY (`EventID`) REFERENCES `ESportEvents` (`EventID`),
-  CONSTRAINT `OrganisedOrgFKey` FOREIGN KEY (`OrganisationID`) REFERENCES `Organisations` (`OrganisationID`)
+  CONSTRAINT `OrganisedEventFKey` FOREIGN KEY (`EventID`) REFERENCES `ESportEvents` (`EventID`) ON DELETE CASCADE,
+  CONSTRAINT `OrganisedOrgFKey` FOREIGN KEY (`OrganisationID`) REFERENCES `Organisations` (`OrganisationID`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 INSERT INTO `Organised` (`OrganisationID`, `EventID`) VALUES
@@ -103,8 +103,8 @@ CREATE TABLE `Owns` (
   `AcquiredOn` date NOT NULL,
   KEY `ParentOrgFKey` (`ParentID`),
   KEY `SubsidiaryOrgFKey` (`SubsidiaryID`),
-  CONSTRAINT `ParentOrgFKey` FOREIGN KEY (`ParentID`) REFERENCES `Organisations` (`OrganisationID`),
-  CONSTRAINT `SubsidiaryOrgFKey` FOREIGN KEY (`SubsidiaryID`) REFERENCES `Organisations` (`OrganisationID`)
+  CONSTRAINT `ParentOrgFKey` FOREIGN KEY (`ParentID`) REFERENCES `Organisations` (`OrganisationID`) ON DELETE CASCADE,
+  CONSTRAINT `SubsidiaryOrgFKey` FOREIGN KEY (`SubsidiaryID`) REFERENCES `Organisations` (`OrganisationID`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 INSERT INTO `Owns` (`ParentID`, `SubsidiaryID`, `AcquiredOn`) VALUES
@@ -116,7 +116,7 @@ CREATE TABLE `Platforms` (
   `GameID` bigint unsigned NOT NULL,
   `Platform` text NOT NULL,
   KEY `PlatformGameFKey` (`GameID`),
-  CONSTRAINT `PlatformGameFKey` FOREIGN KEY (`GameID`) REFERENCES `VideoGames` (`GameID`)
+  CONSTRAINT `PlatformGameFKey` FOREIGN KEY (`GameID`) REFERENCES `VideoGames` (`GameID`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 INSERT INTO `Platforms` (`GameID`, `Platform`) VALUES
@@ -146,10 +146,10 @@ CREATE TABLE `Played` (
   KEY `PlayedEventFKey` (`EventID`),
   KEY `PlayedPlayerFKey` (`PlayerID`),
   KEY `PlayedGameFKey` (`GameID`),
-  CONSTRAINT `PlayedEventFKey` FOREIGN KEY (`EventID`) REFERENCES `ESportEvents` (`EventID`),
-  CONSTRAINT `PlayedGameFKey` FOREIGN KEY (`GameID`) REFERENCES `VideoGames` (`GameID`),
-  CONSTRAINT `PlayedOrgFKey` FOREIGN KEY (`OrganisationID`) REFERENCES `Teams` (`OrganisationID`),
-  CONSTRAINT `PlayedPlayerFKey` FOREIGN KEY (`PlayerID`) REFERENCES `Players` (`PlayerID`)
+  CONSTRAINT `PlayedEventFKey` FOREIGN KEY (`EventID`) REFERENCES `ESportEvents` (`EventID`) ON DELETE CASCADE,
+  CONSTRAINT `PlayedGameFKey` FOREIGN KEY (`GameID`) REFERENCES `VideoGames` (`GameID`) ON DELETE CASCADE,
+  CONSTRAINT `PlayedOrgFKey` FOREIGN KEY (`OrganisationID`) REFERENCES `Teams` (`OrganisationID`) ON DELETE CASCADE,
+  CONSTRAINT `PlayedPlayerFKey` FOREIGN KEY (`PlayerID`) REFERENCES `Players` (`PlayerID`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 INSERT INTO `Played` (`OrganisationID`, `EventID`, `PlayerID`, `GameID`) VALUES
@@ -224,7 +224,7 @@ CREATE TABLE `Ranklist` (
   `SecondPlace` int NOT NULL,
   `ThirdPlace` int NOT NULL,
   KEY `RankEventFKey` (`EventID`),
-  CONSTRAINT `RankEventFKey` FOREIGN KEY (`EventID`) REFERENCES `ESportEvents` (`EventID`)
+  CONSTRAINT `RankEventFKey` FOREIGN KEY (`EventID`) REFERENCES `ESportEvents` (`EventID`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 INSERT INTO `Ranklist` (`EventID`, `FirstPlace`, `SecondPlace`, `ThirdPlace`) VALUES
@@ -236,7 +236,7 @@ CREATE TABLE `Teams` (
   `OrganisationID` bigint unsigned NOT NULL,
   `Manager` text NOT NULL,
   UNIQUE KEY `UniqueTeamOrgID` (`OrganisationID`),
-  CONSTRAINT `TeamOrgFKey` FOREIGN KEY (`OrganisationID`) REFERENCES `Organisations` (`OrganisationID`)
+  CONSTRAINT `TeamOrgFKey` FOREIGN KEY (`OrganisationID`) REFERENCES `Organisations` (`OrganisationID`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 INSERT INTO `Teams` (`OrganisationID`, `Manager`) VALUES
@@ -256,7 +256,7 @@ CREATE TABLE `VideoGames` (
   UNIQUE KEY `GameID` (`GameID`),
   UNIQUE KEY `UniqueGameName` (`Name`),
   KEY `GameOrgFKey` (`OrganisationID`),
-  CONSTRAINT `GameOrgFKey` FOREIGN KEY (`OrganisationID`) REFERENCES `Developers` (`OrganisationID`)
+  CONSTRAINT `GameOrgFKey` FOREIGN KEY (`OrganisationID`) REFERENCES `Developers` (`OrganisationID`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 INSERT INTO `VideoGames` (`GameID`, `Name`, `ReleaseDate`, `LatestPatch`, `RegisteredPlayers`, `OrganisationID`) VALUES
