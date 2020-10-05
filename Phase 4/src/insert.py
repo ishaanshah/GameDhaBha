@@ -216,7 +216,7 @@ def InsertParticipationOfPlayerInEvent(cur, con):
 
     # Query to be executed
     query = """
-            INSERT INTO
+            INSERT IGNORE INTO
             Played (OrganisationID, EventID, PlayerID, GameID)
             VALUES (%(OrganisationID)s, %(EventID)s, %(PlayerID)s, %(GameID)s)
             """

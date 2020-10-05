@@ -32,6 +32,7 @@ CREATE TABLE Played (
    PlayerID             BIGINT UNSIGNED NOT NULL, -- FK Players.PlayerID
    GameID               BIGINT UNSIGNED NOT NULL  -- FK VideoGame.GameID
 );
+ALTER TABLE Played ADD CONSTRAINT UniquePlayed UNIQUE(OrganisationID, EventID, PlayerID, GameID);
 
 CREATE TABLE Players (
     Username            VARCHAR(40) NOT NULL,
