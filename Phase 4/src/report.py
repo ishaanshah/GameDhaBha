@@ -191,7 +191,7 @@ def GetPlayerTeams(cur, con):
                      WHERE PlayerID = %(PlayerID)s
                   )
                 SELECT PlayerTeamIDs.TeamID,
-                       Organisations.Name AS TeamName,
+                       Organisations.Name AS TeamName
                   FROM PlayerTeamIDs
                   JOIN Organisations
                     ON PlayerTeamIDs.TeamID = Organisations.OrganisationID
