@@ -9,6 +9,7 @@ from search import SearchHandler
 from project import ProjectHandler
 from report import ReportHandler
 
+
 def dispatch(ch):
     """
     Function that maps helper functions to option entered
